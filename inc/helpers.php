@@ -52,6 +52,40 @@ function gen_token(): string {
     return bin2hex(random_bytes(16)); // 32 caratteri hex
 }
 
+// Verifica una partita IVA sul servizio UE VIES.
+// Ritorna status: 'valid' | 'invalid' | 'error' | 'skip' (non UE o senza prefisso paese).
+function vies_check(string $vat): array {
+    $vat = strtoupper(preg_replace('/[^A-Za-z0-9]/', '', $vat));
+    $eu = ['AT','BE','BG','CY','CZ','DE','DK','EE','EL','ES','FI','FR','HR','HU','IE','IT','LT','LU','LV','MT','NL','PL','PT','RO','SE','SI','SK'];
+    $cc = substr($vat, 0, 2);
+    $num = substr($vat, 2);
+    if (!in_array($cc, $eu, true) || $num === '') {
+        return ['status' => 'skip'];
+    }
+    $url = "https://ec.europa.eu/taxation_customs/vies/rest-api/ms/$cc/vat/" . rawurlencode($num);
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 15,
+        CURLOPT_HTTPHEADER => ['Accept: application/json'],
+    ]);
+    $res = curl_exec($ch);
+    $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    if ($res === false || $code !== 200) {
+        return ['status' => 'error'];
+    }
+    $j = json_decode($res, true);
+    if (!is_array($j) || !array_key_exists('isValid', $j)) {
+        return ['status' => 'error'];
+    }
+    if ($j['isValid'] === true) {
+        $name = (($j['name'] ?? '') !== '---') ? ($j['name'] ?? '') : '';
+        $addr = (($j['address'] ?? '') !== '---') ? ($j['address'] ?? '') : '';
+        return ['status' => 'valid', 'name' => $name, 'address' => $addr];
+    }
+    return ['status' => 'invalid'];
+}
+
 function base_url(): string {
     $scheme = (($_SERVER['HTTPS'] ?? '') !== '' || ($_SERVER['SERVER_PORT'] ?? '') == 443) ? 'https' : 'http';
     $host = $_SERVER['HTTP_HOST'] ?? 'localhost';

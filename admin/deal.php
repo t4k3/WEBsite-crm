@@ -13,6 +13,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_check($_POST['csrf'] ?? null))
     $deal = $cur->fetch();
     if ($deal) {
         $action = post('action');
+
+        if ($action === 'check_vies') {
+            $v = vies_check(post('vat_number'));
+            $valid = $v['status'] === 'valid' ? 1 : ($v['status'] === 'invalid' ? 0 : null);
+            $vname = $v['status'] === 'valid' ? ($v['name'] ?? '') : null;
+            $chk = in_array($v['status'], ['valid', 'invalid'], true) ? date('Y-m-d H:i:s') : null;
+            db()->prepare('UPDATE deals SET vat_number=?, vat_valid=?, vat_vies_name=?, vat_checked_at=? WHERE id=?')
+                ->execute([post('vat_number'), $valid, $vname, $chk, $id]);
+            header('Location: deal.php?id=' . $id . '&vies=' . $v['status']);
+            exit;
+        }
+
         $price = post('quoted_price') === '' ? null : (float) str_replace(',', '.', post('quoted_price'));
         $shipSame = isset($_POST['ship_same']) ? 1 : 0;
         $newStatus = isset($statuses[$_POST['status'] ?? '']) ? $_POST['status'] : $deal['status'];
@@ -103,6 +115,17 @@ function inp($name, $label, $val, $w = '') {
     <?php if (isset($_GET['err']) && $_GET['err'] === 'price'): ?>
         <div class="bg-red-900/40 border border-red-700 text-red-300 text-sm p-3 rounded mb-4">Imposta prima il prezzo del preventivo.</div>
     <?php endif; ?>
+    <?php if (isset($_GET['vies'])):
+        $vmap = [
+            'valid' => ['bg-green-900/40 border-green-700 text-green-300', 'Partita IVA VALIDA in VIES.'],
+            'invalid' => ['bg-red-900/40 border-red-700 text-red-300', 'Partita IVA NON valida in VIES.'],
+            'error' => ['bg-gray-800 border-gray-600 text-gray-300', 'Servizio VIES non raggiungibile ora, riprova.'],
+            'skip' => ['bg-gray-800 border-gray-600 text-gray-300', 'P.IVA non UE o senza prefisso paese: VIES non applicabile.'],
+        ];
+        $vm = $vmap[$_GET['vies']] ?? null;
+        if ($vm): ?>
+        <div class="border <?= $vm[0] ?> text-sm p-3 rounded mb-4"><?= e($vm[1]) ?></div>
+    <?php endif; endif; ?>
 
     <div class="grid md:grid-cols-2 gap-8">
         <section>
@@ -148,6 +171,13 @@ function inp($name, $label, $val, $w = '') {
                 </label>
 
                 <h2 class="font-semibold text-gray-300 pt-2">Dati di fatturazione</h2>
+                <?php if ($d['vat_valid'] !== null): ?>
+                    <p class="text-xs <?= $d['vat_valid'] ? 'text-green-400' : 'text-red-400' ?>">
+                        VIES: <?= $d['vat_valid'] ? 'P.IVA valida' : 'P.IVA non valida' ?>
+                        <?= $d['vat_vies_name'] ? '— ' . e($d['vat_vies_name']) : '' ?>
+                        <?= $d['vat_checked_at'] ? '<span class="text-gray-500">(' . e(substr($d['vat_checked_at'], 0, 16)) . ')</span>' : '' ?>
+                    </p>
+                <?php endif; ?>
                 <label class="block"><span class="text-gray-400 text-xs">Tipo cliente</span>
                     <select name="customer_type" class="w-full p-2 rounded text-black mt-1">
                         <option value="">—</option>
@@ -187,7 +217,8 @@ function inp($name, $label, $val, $w = '') {
                     ?>
                 </div>
 
-                <div class="flex gap-3 pt-2">
+                <button name="action" value="check_vies" class="w-full bg-gray-700 text-white py-2 rounded text-xs hover:bg-gray-600">Verifica P.IVA su VIES</button>
+                <div class="flex gap-3 pt-1">
                     <button name="action" value="save" class="flex-1 bg-gray-200 text-black py-2 rounded font-semibold hover:bg-white">Salva</button>
                     <button name="action" value="send_quote" class="flex-1 bg-yellow-400 text-black py-2 rounded font-semibold hover:bg-yellow-300">Salva e invia preventivo</button>
                 </div>

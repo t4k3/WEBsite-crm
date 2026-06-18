@@ -52,13 +52,17 @@ $csrf = csrf_token();
             </div>
 
             <?php if ($deal['accepted_at']): ?>
-                <p class="text-center text-green-400 font-semibold">Hai già accettato questa offerta. Grazie! Ti contatteremo per i passi successivi.</p>
+                <p class="text-center text-green-400 font-semibold mb-3">Hai già accettato questa offerta. Grazie!</p>
+                <p class="text-center text-sm text-gray-400"><a href="<?= e('dati.php?token=' . $token) ?>" class="text-yellow-400 underline">Inserisci/aggiorna i tuoi dati di fatturazione</a></p>
             <?php else: ?>
                 <div id="box">
                     <p class="text-sm text-gray-400 mb-4">Se l'offerta ti soddisfa, accettala qui sotto: ti ricontatteremo per finalizzare l'ordine e i dati di fatturazione. Per domande o per concordare condizioni, rispondi pure all'email.</p>
                     <button id="acceptBtn" class="w-full bg-yellow-400 text-black px-6 py-3 rounded font-semibold hover:bg-yellow-300 transition">
                         Accetto l'offerta
                     </button>
+                    <p class="text-center text-sm text-gray-400 mt-4">
+                        Hai fretta? <a href="<?= e('dati.php?token=' . $token) ?>" class="text-yellow-400 underline">Inserisci subito i tuoi dati di fatturazione</a>
+                    </p>
                 </div>
                 <div id="ok" class="hidden text-center text-green-400 font-semibold">Offerta accettata! Grazie, ti contatteremo a breve.</div>
                 <script>

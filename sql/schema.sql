@@ -34,6 +34,9 @@ CREATE TABLE IF NOT EXISTS deals (
   sdi_code        VARCHAR(7)   NULL,                        -- codice destinatario SDI
   pec             VARCHAR(190) NULL,
   eori            VARCHAR(40)  NULL,
+  vat_valid       TINYINT(1)   NULL,                        -- NULL=non verificato, 0=non valido, 1=valido (VIES)
+  vat_vies_name   VARCHAR(190) NULL,                        -- intestatario restituito da VIES
+  vat_checked_at  DATETIME     NULL,
   bill_address    VARCHAR(190) NULL,
   bill_city       VARCHAR(90)  NULL,
   bill_zip        VARCHAR(20)  NULL,
