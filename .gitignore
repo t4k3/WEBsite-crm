@@ -52,6 +52,7 @@ tmp/
 # config.php
 .env
 deploy/.env
+config/db.php
 
 # ========== DEPLOY (FTP) ==========
 _live_backup/
