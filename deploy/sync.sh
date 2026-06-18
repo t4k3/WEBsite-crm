@@ -30,6 +30,7 @@ EXCLUDES=(
   --exclude-glob 'images/'
   --exclude-glob 'tools/'
   --exclude-glob 'assets/raw/'
+  --exclude-glob 'config/db.local.php'
   --exclude-glob '.gitignore'
   --exclude-glob '.DS_Store'
   --exclude-glob '*.zip'
