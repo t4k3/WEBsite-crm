@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
       block.className = `h-screen flex flex-col ${layout} items-center justify-center gap-10 px-6 bg-gradient-to-b from-black to-gray-900`;
       block.innerHTML = `
         <img src="${section.img}" alt="${text.title}"
-             class="w-full md:w-1/2 rounded-2xl shadow-lg object-cover"
+             class="w-full md:w-1/2 max-h-[75vh] object-contain drop-shadow-2xl"
              loading="lazy"
              onerror="this.src='/assets/img/placeholder.svg'">
         <div class="text-center md:text-left max-w-lg">

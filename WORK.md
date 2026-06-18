@@ -20,7 +20,9 @@ Fonte di verità: **il locale**. Vedi `deploy/` per il sync.
 ## Backlog
 
 ### 🔴 Priorità alta — da fare prima del prossimo deploy
-- [ ] **Immagini sezioni mancanti**: `ballgun_safety_system.webp`, `effects_combo.webp`, `detail_rollers_aluminum.webp` (o aggiornare i path in `assets/js/sections.js`). 3 sezioni su 5 mostrano il placeholder.
+- [x] **Immagini sezioni**: tutte e 5 ora sono cutout trasparenti di foto reali (pipeline `tools/photo2webp.sh`). CSS aggiornato a `object-contain` + `drop-shadow`.
+- [ ] **Foto batteria al sodio**: lo slot `ballgun_battery_pack.webp` mostra TEMPORANEAMENTE un cutout della macchina rosa (l'illustrazione AI è stata rimossa). Sostituire con una foto vera della batteria appena disponibile.
+- [ ] **Dettaglio "rollers"**: `detail_rollers_aluminum.webp` è la macchina intera; volendo, ritagliare un vero primo piano della testa/rulli.
 - [ ] **Immagini coach mancanti**: `coach_08/09/10/13.webp` (in attesa anche delle frasi autorizzate).
 - [ ] **Video tutorial**: sostituire `VIDEO_ID_1/2/3` con gli ID YouTube reali in `tutorials.html`.
 - [ ] **Bug PHP**: rimuovere la riga vuota prima di `<?php` in `sendmail_secure.php` (rischio "headers already sent").
