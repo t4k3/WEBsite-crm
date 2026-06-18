@@ -92,16 +92,22 @@ function base_url(): string {
     return $scheme . '://' . $host;
 }
 
-// Pipeline CRM (stato => etichetta leggibile), in ordine.
+// Stato TRATTATIVA (solo il funnel di vendita). Pagamento e spedizione sono separati.
 function crm_statuses(): array {
     return [
         'nuovo'              => 'Nuova richiesta',
         'preventivo_inviato' => 'Preventivo inviato',
         'in_trattativa'      => 'In trattativa',
         'ordine_confermato'  => 'Ordine confermato',
-        'pagato'             => 'Pagato',
-        'spedito'            => 'Spedito',
-        'consegnato'         => 'Consegnato',
         'perso'              => 'Perso',
+    ];
+}
+
+// Stato SPEDIZIONE (indipendente dal pagamento).
+function shipment_statuses(): array {
+    return [
+        'non_spedito' => 'Non spedito',
+        'spedito'     => 'Spedito',
+        'consegnato'  => 'Consegnato',
     ];
 }

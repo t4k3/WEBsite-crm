@@ -25,6 +25,10 @@ CREATE TABLE IF NOT EXISTS deals (
   currency        CHAR(3) NOT NULL DEFAULT 'EUR',
   quote_sent_at   DATETIME NULL,                            -- quando hai inviato il preventivo
   accepted_at     DATETIME NULL,                            -- quando il cliente ha accettato
+  paid            TINYINT(1) NOT NULL DEFAULT 0,            -- pagamento (indipendente)
+  paid_at         DATETIME NULL,
+  shipment        VARCHAR(16) NOT NULL DEFAULT 'non_spedito', -- non_spedito | spedito | consegnato (indipendente)
+  shipped_at      DATETIME NULL,
 
   -- Step 2: fatturazione (IT + internazionale)
   customer_type   ENUM('azienda','privato') NULL,

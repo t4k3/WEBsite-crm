@@ -37,6 +37,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_check($_POST['csrf'] ?? null))
             exit;
         }
 
+        // Pagamento (indipendente dalla spedizione)
+        if (isset($_POST['set_paid'])) {
+            $p = ($_POST['set_paid'] === '1') ? 1 : 0;
+            db()->prepare('UPDATE deals SET paid = ?, paid_at = ? WHERE id = ?')
+                ->execute([$p, $p ? date('Y-m-d H:i:s') : null, $id]);
+            db()->prepare('INSERT INTO deal_history (deal_id, old_status, new_status, note, changed_by) VALUES (?,?,?,?,?)')
+                ->execute([$id, $deal['status'], $deal['status'], $p ? 'Pagamento ricevuto' : 'Pagamento annullato', current_admin()]);
+            header('Location: deal.php?id=' . $id);
+            exit;
+        }
+
+        // Spedizione (indipendente dal pagamento)
+        $ship = $_POST['set_ship'] ?? '';
+        if (array_key_exists($ship, shipment_statuses())) {
+            $shippedAt = $deal['shipped_at'];
+            if ($ship === 'spedito' && !$shippedAt) $shippedAt = date('Y-m-d H:i:s');
+            if ($ship === 'non_spedito') $shippedAt = null;
+            db()->prepare('UPDATE deals SET shipment = ?, shipped_at = ? WHERE id = ?')
+                ->execute([$ship, $shippedAt, $id]);
+            db()->prepare('INSERT INTO deal_history (deal_id, old_status, new_status, note, changed_by) VALUES (?,?,?,?,?)')
+                ->execute([$id, $deal['status'], $deal['status'], 'Spedizione: ' . shipment_statuses()[$ship], current_admin()]);
+            header('Location: deal.php?id=' . $id);
+            exit;
+        }
+
         $price = post('quoted_price') === '' ? null : (float) str_replace(',', '.', post('quoted_price'));
         $shipSame = isset($_POST['ship_same']) ? 1 : 0;
         $newStatus = isset($statuses[$_POST['status'] ?? '']) ? $_POST['status'] : $deal['status'];
@@ -98,8 +123,9 @@ $csrf = csrf_token();
 $link = base_url() . '/preventivo.php?token=' . $d['token'];
 
 // Fasi lineari (per la barra di avanzamento) e prossime azioni suggerite
-$flow = ['nuovo', 'preventivo_inviato', 'in_trattativa', 'ordine_confermato', 'pagato', 'spedito', 'consegnato'];
+$flow = ['nuovo', 'preventivo_inviato', 'in_trattativa', 'ordine_confermato'];
 $curIdx = array_search($d['status'], $flow, true); // false se 'perso'
+$shipStatuses = shipment_statuses();
 
 function row($label, $val) {
     if ($val === null || $val === '') return;
@@ -123,6 +149,8 @@ function inp($name, $label, $val, $w = '') {
     <a href="index.php" class="text-yellow-400 text-sm">← Tutte le trattative</a>
     <h1 class="text-xl font-bold mt-2 mb-4">#<?= (int)$d['id'] ?> · <?= e($d['contact_name']) ?>
         <span class="px-2 py-0.5 rounded bg-gray-700 text-xs align-middle"><?= e($statuses[$d['status']] ?? $d['status']) ?></span>
+        <?php if ($d['paid']): ?><span class="px-2 py-0.5 rounded bg-green-700 text-xs align-middle">Pagato</span><?php endif; ?>
+        <?php if ($d['shipment'] !== 'non_spedito'): ?><span class="px-2 py-0.5 rounded bg-blue-700 text-xs align-middle"><?= e($shipStatuses[$d['shipment']]) ?></span><?php endif; ?>
     </h1>
 
     <?php if (isset($_GET['sent'])): ?>
@@ -143,28 +171,54 @@ function inp($name, $label, $val, $w = '') {
         <div class="border <?= $vm[0] ?> text-sm p-3 rounded mb-4"><?= e($vm[1]) ?></div>
     <?php endif; endif; ?>
 
-    <!-- Avanzamento cliccabile: clicca una fase per spostarci la trattativa -->
-    <form method="POST" class="mb-6">
-        <input type="hidden" name="csrf" value="<?= e($csrf) ?>" />
-        <div class="flex flex-wrap items-center gap-1 text-xs">
-            <?php foreach ($flow as $i => $s):
-                $done = ($curIdx !== false && $i < $curIdx);
-                $isCur = ($d['status'] === $s);
-                $cls = $isCur ? 'bg-yellow-400 text-black font-semibold' : ($done ? 'bg-green-700 text-white hover:bg-green-600' : 'bg-gray-800 text-gray-400 hover:bg-gray-700');
-            ?>
-                <button name="set_to" value="<?= e($s) ?>" class="px-2 py-1 rounded <?= $cls ?>"><?= $done ? '✓ ' : '' ?><?= e($statuses[$s]) ?></button>
-                <?php if ($i < count($flow) - 1): ?><span class="text-gray-600">›</span><?php endif; ?>
-            <?php endforeach; ?>
-            <span class="mx-1 text-gray-700">|</span>
-            <?php if ($d['status'] === 'perso'): ?>
-                <span class="px-2 py-1 rounded bg-red-700 text-white">Persa</span>
-                <button name="set_to" value="in_trattativa" class="px-2 py-1 rounded bg-gray-700 text-white hover:bg-gray-600">Riapri</button>
-            <?php else: ?>
-                <button name="set_to" value="perso" class="px-2 py-1 rounded bg-gray-800 text-red-300 hover:bg-gray-700">Segna come persa</button>
-            <?php endif; ?>
+    <!-- Tre dimensioni indipendenti: trattativa · pagamento · spedizione -->
+    <div class="grid md:grid-cols-3 gap-4 mb-6">
+        <div class="bg-gray-900 p-4 rounded-xl">
+            <h2 class="text-xs uppercase tracking-wide text-gray-500 mb-2">Trattativa</h2>
+            <form method="POST" class="flex flex-wrap gap-1 text-xs">
+                <input type="hidden" name="csrf" value="<?= e($csrf) ?>" />
+                <?php foreach ($flow as $i => $s):
+                    $done = ($curIdx !== false && $i < $curIdx);
+                    $isCur = ($d['status'] === $s);
+                    $cls = $isCur ? 'bg-yellow-400 text-black font-semibold' : ($done ? 'bg-green-700 text-white hover:bg-green-600' : 'bg-gray-800 text-gray-400 hover:bg-gray-700');
+                ?>
+                    <button name="set_to" value="<?= e($s) ?>" class="px-2 py-1 rounded <?= $cls ?>"><?= $done ? '✓ ' : '' ?><?= e($statuses[$s]) ?></button>
+                <?php endforeach; ?>
+                <?php if ($d['status'] === 'perso'): ?>
+                    <button name="set_to" value="in_trattativa" class="px-2 py-1 rounded bg-gray-700 text-white hover:bg-gray-600">Riapri</button>
+                <?php else: ?>
+                    <button name="set_to" value="perso" class="px-2 py-1 rounded bg-gray-800 text-red-300 hover:bg-gray-700">Persa</button>
+                <?php endif; ?>
+            </form>
         </div>
-        <p class="text-xs text-gray-500 mt-2">Clicca una fase per spostare la trattativa — puoi saltare passaggi o tornare indietro (es. spedire prima del pagamento).</p>
-    </form>
+
+        <div class="bg-gray-900 p-4 rounded-xl">
+            <h2 class="text-xs uppercase tracking-wide text-gray-500 mb-2">Pagamento</h2>
+            <form method="POST" class="flex items-center gap-2">
+                <input type="hidden" name="csrf" value="<?= e($csrf) ?>" />
+                <?php if ($d['paid']): ?>
+                    <span class="px-2 py-1 rounded bg-green-700 text-white text-xs">✓ Pagato<?= $d['paid_at'] ? ' · ' . e(substr($d['paid_at'], 0, 10)) : '' ?></span>
+                    <button name="set_paid" value="0" class="px-2 py-1 rounded bg-gray-800 text-gray-300 text-xs hover:bg-gray-700">Annulla</button>
+                <?php else: ?>
+                    <span class="text-gray-400 text-xs">Non pagato</span>
+                    <button name="set_paid" value="1" class="px-3 py-1 rounded bg-yellow-400 text-black font-semibold text-xs hover:bg-yellow-300">Segna pagato</button>
+                <?php endif; ?>
+            </form>
+        </div>
+
+        <div class="bg-gray-900 p-4 rounded-xl">
+            <h2 class="text-xs uppercase tracking-wide text-gray-500 mb-2">Spedizione</h2>
+            <form method="POST" class="flex flex-wrap gap-1 text-xs">
+                <input type="hidden" name="csrf" value="<?= e($csrf) ?>" />
+                <?php foreach ($shipStatuses as $sk => $sl):
+                    $cls = $d['shipment'] === $sk ? 'bg-yellow-400 text-black font-semibold' : 'bg-gray-800 text-gray-400 hover:bg-gray-700';
+                ?>
+                    <button name="set_ship" value="<?= e($sk) ?>" class="px-2 py-1 rounded <?= $cls ?>"><?= e($sl) ?></button>
+                <?php endforeach; ?>
+            </form>
+            <?php if ($d['tracking_number']): ?><p class="text-xs text-gray-500 mt-2">Tracking: <?= e($d['tracking_number']) ?></p><?php endif; ?>
+        </div>
+    </div>
 
     <div class="grid md:grid-cols-2 gap-8">
         <section>

@@ -5,7 +5,7 @@ require_login();
 $statuses = crm_statuses();
 $filter = $_GET['status'] ?? '';
 
-$sql = 'SELECT id, created_at, status, contact_name, email, country, quantity, company_name FROM deals';
+$sql = 'SELECT id, created_at, status, paid, shipment, contact_name, email, country, quantity, company_name FROM deals';
 $params = [];
 if (isset($statuses[$filter])) {
     $sql .= ' WHERE status = ?';
@@ -67,7 +67,11 @@ $total = array_sum($counts);
                 <td class="py-2 pr-4 text-gray-300"><?= e($r['email']) ?></td>
                 <td class="py-2 pr-4"><?= e($r['country']) ?></td>
                 <td class="py-2 pr-4"><?= (int)$r['quantity'] ?></td>
-                <td class="py-2 pr-4"><span class="px-2 py-0.5 rounded bg-gray-700 text-xs"><?= e($statuses[$r['status']] ?? $r['status']) ?></span></td>
+                <td class="py-2 pr-4">
+                    <span class="px-2 py-0.5 rounded bg-gray-700 text-xs"><?= e($statuses[$r['status']] ?? $r['status']) ?></span>
+                    <?php if ($r['paid']): ?><span class="px-1.5 py-0.5 rounded bg-green-700 text-xs">pagato</span><?php endif; ?>
+                    <?php if ($r['shipment'] !== 'non_spedito'): ?><span class="px-1.5 py-0.5 rounded bg-blue-700 text-xs"><?= e($r['shipment'] === 'consegnato' ? 'consegnato' : 'spedito') ?></span><?php endif; ?>
+                </td>
             </tr>
         <?php endforeach; ?>
         </tbody>
