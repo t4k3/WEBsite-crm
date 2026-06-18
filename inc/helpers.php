@@ -95,14 +95,13 @@ function base_url(): string {
 // Pipeline CRM (stato => etichetta leggibile), in ordine.
 function crm_statuses(): array {
     return [
-        'nuovo'            => 'Nuova richiesta',
-        'ordine_ricevuto'  => 'Ordine ricevuto',
+        'nuovo'              => 'Nuova richiesta',
         'preventivo_inviato' => 'Preventivo inviato',
-        'in_trattativa'    => 'In trattativa',
-        'ordine_confermato' => 'Ordine confermato',
-        'pagato'           => 'Pagato',
-        'spedito'          => 'Spedito',
-        'consegnato'       => 'Consegnato',
-        'perso'            => 'Perso',
+        'in_trattativa'      => 'In trattativa',
+        'ordine_confermato'  => 'Ordine confermato',
+        'pagato'             => 'Pagato',
+        'spedito'            => 'Spedito',
+        'consegnato'         => 'Consegnato',
+        'perso'              => 'Perso',
     ];
 }
