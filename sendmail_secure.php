@@ -1,4 +1,3 @@
-
 <?php
 // ==========================================
 //  SENDMAIL SECURE – Takeoff.pro / Wazlley

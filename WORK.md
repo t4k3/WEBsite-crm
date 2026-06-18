@@ -25,11 +25,11 @@ Fonte di verità: **il locale**. Vedi `deploy/` per il sync.
 - [ ] **Dettaglio "rollers"**: `detail_rollers_aluminum.webp` è la macchina intera; volendo, ritagliare un vero primo piano della testa/rulli.
 - [ ] **Immagini coach mancanti**: `coach_08/09/10/13.webp` (in attesa anche delle frasi autorizzate).
 - [ ] **Video tutorial**: sostituire `VIDEO_ID_1/2/3` con gli ID YouTube reali in `tutorials.html`.
-- [ ] **Bug PHP**: rimuovere la riga vuota prima di `<?php` in `sendmail_secure.php` (rischio "headers already sent").
+- [x] **Bug PHP**: rimossa la riga vuota prima di `<?php` in `sendmail_secure.php`.
 - [ ] **Rimuovere `check_wazlley.php`** dal server live (espone path/host e con `?mailtest=1` consente invio mail a chiunque). Già escluso dall'upload; verificare che non sia già online.
 
 ### 🟠 Priorità media — bug e pulizia
-- [ ] **Bug lingua** in `assets/js/loadSections.js` riga 7: parentesizzare il ternario (vedi note sotto).
+- [x] **Bug lingua** in `assets/js/loadSections.js`: ternario parentesizzato.
 - [ ] **Traduzioni duplicate**: decidere fonte unica tra `assets/js/lang.js` (usato) e `assets/lang/*.json` (morti, non caricati). Rimuovere i JSON o passare a fetch da JSON.
 - [ ] **Navbar duplicata** in ogni pagina: valutare include di `partials/navbar.html` (oggi inutilizzato).
 - [ ] **Handler lingua tripli** (lang.js + loadSections.js + carousel.js) → unificare.

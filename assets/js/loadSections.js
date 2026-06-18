@@ -5,9 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Determina lingua browser o quella scelta
   let currentLang =
-    localStorage.getItem("lang") || navigator.language.startsWith("it")
-      ? "it"
-      : "en";
+    localStorage.getItem("lang") ||
+    (navigator.language.startsWith("it") ? "it" : "en");
 
   function renderSections(lang) {
     container.innerHTML = "";
