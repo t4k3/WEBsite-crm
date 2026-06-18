@@ -100,17 +100,6 @@ $link = base_url() . '/preventivo.php?token=' . $d['token'];
 // Fasi lineari (per la barra di avanzamento) e prossime azioni suggerite
 $flow = ['nuovo', 'preventivo_inviato', 'in_trattativa', 'ordine_confermato', 'pagato', 'spedito', 'consegnato'];
 $curIdx = array_search($d['status'], $flow, true); // false se 'perso'
-$nextMap = [
-    'nuovo'              => ['in_trattativa' => 'Metti in trattativa'],
-    'preventivo_inviato' => ['in_trattativa' => 'Metti in trattativa', 'ordine_confermato' => 'Ordine confermato'],
-    'in_trattativa'      => ['ordine_confermato' => 'Ordine confermato'],
-    'ordine_confermato'  => ['pagato' => 'Segna come pagato'],
-    'pagato'             => ['spedito' => 'Segna come spedito'],
-    'spedito'            => ['consegnato' => 'Segna come consegnato'],
-    'consegnato'         => [],
-    'perso'              => [],
-];
-$nextActions = $nextMap[$d['status']] ?? [];
 
 function row($label, $val) {
     if ($val === null || $val === '') return;
@@ -154,18 +143,28 @@ function inp($name, $label, $val, $w = '') {
         <div class="border <?= $vm[0] ?> text-sm p-3 rounded mb-4"><?= e($vm[1]) ?></div>
     <?php endif; endif; ?>
 
-    <!-- Barra di avanzamento -->
-    <div class="flex flex-wrap items-center gap-1 mb-6 text-xs">
-        <?php foreach ($flow as $i => $s):
-            $done = ($curIdx !== false && $i < $curIdx);
-            $isCur = ($d['status'] === $s);
-            $cls = $isCur ? 'bg-yellow-400 text-black' : ($done ? 'bg-green-700 text-white' : 'bg-gray-800 text-gray-500');
-        ?>
-            <span class="px-2 py-1 rounded <?= $cls ?>"><?= $done ? '✓ ' : '' ?><?= e($statuses[$s]) ?></span>
-            <?php if ($i < count($flow) - 1): ?><span class="text-gray-600">›</span><?php endif; ?>
-        <?php endforeach; ?>
-        <?php if ($d['status'] === 'perso'): ?><span class="px-2 py-1 rounded bg-red-700 text-white ml-2">Persa</span><?php endif; ?>
-    </div>
+    <!-- Avanzamento cliccabile: clicca una fase per spostarci la trattativa -->
+    <form method="POST" class="mb-6">
+        <input type="hidden" name="csrf" value="<?= e($csrf) ?>" />
+        <div class="flex flex-wrap items-center gap-1 text-xs">
+            <?php foreach ($flow as $i => $s):
+                $done = ($curIdx !== false && $i < $curIdx);
+                $isCur = ($d['status'] === $s);
+                $cls = $isCur ? 'bg-yellow-400 text-black font-semibold' : ($done ? 'bg-green-700 text-white hover:bg-green-600' : 'bg-gray-800 text-gray-400 hover:bg-gray-700');
+            ?>
+                <button name="set_to" value="<?= e($s) ?>" class="px-2 py-1 rounded <?= $cls ?>"><?= $done ? '✓ ' : '' ?><?= e($statuses[$s]) ?></button>
+                <?php if ($i < count($flow) - 1): ?><span class="text-gray-600">›</span><?php endif; ?>
+            <?php endforeach; ?>
+            <span class="mx-1 text-gray-700">|</span>
+            <?php if ($d['status'] === 'perso'): ?>
+                <span class="px-2 py-1 rounded bg-red-700 text-white">Persa</span>
+                <button name="set_to" value="in_trattativa" class="px-2 py-1 rounded bg-gray-700 text-white hover:bg-gray-600">Riapri</button>
+            <?php else: ?>
+                <button name="set_to" value="perso" class="px-2 py-1 rounded bg-gray-800 text-red-300 hover:bg-gray-700">Segna come persa</button>
+            <?php endif; ?>
+        </div>
+        <p class="text-xs text-gray-500 mt-2">Clicca una fase per spostare la trattativa — puoi saltare passaggi o tornare indietro (es. spedire prima del pagamento).</p>
+    </form>
 
     <div class="grid md:grid-cols-2 gap-8">
         <section>
@@ -192,32 +191,12 @@ function inp($name, $label, $val, $w = '') {
         </section>
 
         <section>
-            <!-- Prossima azione -->
-            <div class="bg-gray-900 p-4 rounded-xl mb-4">
-                <h2 class="font-semibold text-gray-300 mb-2">Prossima azione</h2>
-                <?php if ($d['status'] === 'nuovo'): ?>
-                    <p class="text-xs text-gray-400 mb-3">Imposta il prezzo qui sotto, poi premi «Salva e invia preventivo» per mandare l'offerta al cliente.</p>
-                <?php endif; ?>
-                <?php if ($d['status'] === 'consegnato'): ?>
-                    <p class="text-green-400 text-sm">Trattativa completata ✓</p>
-                <?php else: ?>
-                <form method="POST" class="flex flex-wrap gap-2">
-                    <input type="hidden" name="csrf" value="<?= e($csrf) ?>" />
-                    <?php foreach ($nextActions as $stk => $label): ?>
-                        <button name="set_to" value="<?= e($stk) ?>" class="bg-yellow-400 text-black px-4 py-2 rounded font-semibold hover:bg-yellow-300 text-sm"><?= e($label) ?></button>
-                    <?php endforeach; ?>
-                    <?php if ($d['status'] === 'perso'): ?>
-                        <button name="set_to" value="in_trattativa" class="bg-gray-700 text-white px-4 py-2 rounded text-sm hover:bg-gray-600">Riapri trattativa</button>
-                    <?php else: ?>
-                        <button name="set_to" value="perso" class="bg-gray-700 text-red-300 px-4 py-2 rounded text-sm hover:bg-gray-600">Segna come persa</button>
-                    <?php endif; ?>
-                </form>
-                <?php endif; ?>
-            </div>
-
             <form method="POST" class="space-y-4 text-sm bg-gray-900 p-4 rounded-xl">
                 <input type="hidden" name="csrf" value="<?= e($csrf) ?>" />
                 <h2 class="font-semibold text-gray-300">Dettagli e dati</h2>
+                <?php if ($d['status'] === 'nuovo'): ?>
+                    <p class="text-xs text-gray-400">Imposta il prezzo e premi «Salva e invia preventivo» per mandare l'offerta al cliente.</p>
+                <?php endif; ?>
                 <?php inp('quoted_price', 'Prezzo preventivo (' . $d['currency'] . ')', $d['quoted_price']); ?>
                 <?php inp('tracking_number', 'Tracking spedizione', $d['tracking_number']); ?>
                 <label class="block"><span class="text-gray-400 text-xs">Note interne</span>
@@ -272,18 +251,6 @@ function inp($name, $label, $val, $w = '') {
                 </div>
 
                 <button name="action" value="check_vies" class="w-full bg-gray-700 text-white py-2 rounded text-xs hover:bg-gray-600">Verifica P.IVA su VIES</button>
-
-                <details class="text-xs text-gray-400">
-                    <summary class="cursor-pointer select-none">Cambia stato manualmente</summary>
-                    <div class="mt-2 space-y-2">
-                        <select name="status" class="w-full p-2 rounded text-black">
-                            <?php foreach ($statuses as $k => $label): ?>
-                                <option value="<?= e($k) ?>" <?= $d['status'] === $k ? 'selected' : '' ?>><?= e($label) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                        <?php inp('history_note', 'Nota per lo storico (opzionale)', ''); ?>
-                    </div>
-                </details>
 
                 <div class="flex gap-3 pt-1">
                     <button name="action" value="save" class="flex-1 bg-gray-200 text-black py-2 rounded font-semibold hover:bg-white">Salva dati</button>
