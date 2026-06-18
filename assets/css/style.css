@@ -1,0 +1,6 @@
+html {
+  scroll-behavior: smooth;
+}
+[data-parallax] {
+  transform: translateY(var(--scrollY, 0));
+}

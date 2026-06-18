@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title data-i18n="thankyou_title">
+            Richiesta inviata – Takeoff.pro
+        </title>
+        <link rel="icon" href="/assets/img/favicon.ico" />
+
+        <!-- ✅ Tailwind -->
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <!-- ✅ Font Fauna -->
+        <style>
+            @font-face {
+                font-family: "Fauna";
+                src: url("/assets/fonts/fauna-thin.woff2") format("woff2");
+                font-weight: 300;
+                font-style: normal;
+                font-display: swap;
+            }
+
+            body {
+                font-family:
+                    "Fauna", "Helvetica Neue", Helvetica, Arial, sans-serif;
+                background-color: black;
+                color: white;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- ================= NAVBAR ================= -->
+        <nav
+            class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-black/70 backdrop-blur-md"
+        >
+            <!-- LOGO -->
+            <a href="index.html" class="flex items-center gap-2">
+                <img
+                    src="/assets/img/logo.png"
+                    alt="Logo Wazlley"
+                    class="h-10"
+                />
+            </a>
+
+            <!-- MENU LINKS -->
+            <div class="flex gap-4 text-sm font-light">
+                <a
+                    href="index.html#home"
+                    class="hover:text-yellow-400"
+                    data-i18n="nav_home"
+                    >Home</a
+                >
+                <a
+                    href="contact.html"
+                    class="hover:text-yellow-400"
+                    data-i18n="nav_contact"
+                    >Contatti</a
+                >
+                <a
+                    href="tutorials.html"
+                    class="hover:text-yellow-400"
+                    data-i18n="nav_tutorials"
+                    >Tutorial</a
+                >
+                <a
+                    href="privacy.html"
+                    class="hover:text-yellow-400"
+                    data-i18n="nav_privacy"
+                    >Privacy</a
+                >
+            </div>
+
+            <!-- LANGUAGE SWITCH -->
+            <div class="flex gap-2">
+                <button
+                    class="lang-switch text-lg hover:opacity-80 transition"
+                    data-lang="it"
+                    title="Italiano"
+                >
+                    🇮🇹
+                </button>
+                <button
+                    class="lang-switch text-lg hover:opacity-80 transition"
+                    data-lang="en"
+                    title="English (USA)"
+                >
+                    🇺🇸
+                </button>
+            </div>
+        </nav>
+
+        <!-- ================= MAIN CONTENT ================= -->
+        <main
+            class="pt-40 px-6 text-center flex flex-col items-center justify-center min-h-[70vh]"
+        >
+            <h1 class="text-5xl font-bold mb-6" data-i18n="thankyou_heading">
+                Grazie per averci contattato!
+            </h1>
+            <p
+                class="text-lg text-gray-300 max-w-xl mb-10"
+                data-i18n="thankyou_message"
+            >
+                Abbiamo ricevuto la tua richiesta e ti risponderemo al più
+                presto.
+            </p>
+
+            <a
+                href="index.html"
+                class="px-8 py-3 bg-yellow-400 text-black rounded-xl font-semibold hover:bg-yellow-300 transition"
+                data-i18n="thankyou_back"
+            >
+                Torna alla Home
+            </a>
+        </main>
+
+        <!-- ================= FOOTER ================= -->
+        <footer
+            class="bg-gray-950 text-center py-6 text-sm text-gray-400 mt-16"
+        >
+            <p data-i18n="footer_text">
+                © 2025 Wazlley by Takeoff.pro — sport innovation
+            </p>
+            <p>
+                <a href="mailto:info@takeoff.pro" class="text-yellow-400"
+                    >info@takeoff.pro</a
+                >
+            </p>
+        </footer>
+
+        <!-- ================= SCRIPTS ================= -->
+        <script src="/assets/js/lang.js"></script>
+    </body>
+</html>

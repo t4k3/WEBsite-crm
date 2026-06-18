@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Wazlley – Ballgun Pro 2025: la macchina spara-palloni per allenamenti professionali di volley, sviluppata da Takeoff.pro"
+        />
+        <title>Wazlley – Ballgun Pro 2025</title>
+
+        <link rel="icon" href="/assets/img/favicon.ico" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+        <style>
+            @font-face {
+                font-family: "Fauna";
+                src: url("/assets/fonts/fauna-thin.woff2") format("woff2");
+                font-weight: 300;
+                font-style: normal;
+                font-display: swap;
+            }
+
+            body {
+                font-family:
+                    "Fauna", "Helvetica Neue", Helvetica, Arial, sans-serif;
+                background-color: black;
+                color: white;
+                overflow-x: hidden;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            [data-parallax] {
+                transform: translateY(var(--scrollY, 0));
+            }
+
+            button.lang-switch {
+                cursor: pointer;
+                font-size: 1.1rem;
+                transition: transform 0.2s ease;
+            }
+
+            button.lang-switch:hover {
+                transform: scale(1.15);
+            }
+
+            button.lang-switch:focus {
+                outline: 2px solid #facc15;
+                outline-offset: 2px;
+            }
+
+            button.lang-switch:focus:not(:focus-visible) {
+                outline: none;
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- ================= NAVBAR ================= -->
+        <nav
+            class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-black/70 backdrop-blur-md"
+        >
+            <a href="index.html" class="flex items-center gap-2">
+                <img
+                    src="/assets/img/logo.png"
+                    alt="Logo Wazlley"
+                    class="h-10"
+                />
+            </a>
+
+            <div class="flex gap-4 text-sm font-light">
+                <a
+                    href="#home"
+                    class="hover:text-yellow-400"
+                    data-i18n="nav_home"
+                    >Home</a
+                >
+                <a
+                    href="contact.html"
+                    class="hover:text-yellow-400"
+                    data-i18n="nav_contact"
+                    >Contatti</a
+                >
+                <a
+                    href="tutorials.html"
+                    class="hover:text-yellow-400"
+                    data-i18n="nav_tutorials"
+                    >Tutorial</a
+                >
+                <a
+                    href="privacy.html"
+                    class="hover:text-yellow-400"
+                    data-i18n="nav_privacy"
+                    >Privacy</a
+                >
+            </div>
+
+            <div class="flex gap-2">
+                <button
+                    class="lang-switch text-lg hover:opacity-80 transition"
+                    data-lang="it"
+                    title="Italiano"
+                >
+                    🇮🇹
+                </button>
+                <button
+                    class="lang-switch text-lg hover:opacity-80 transition"
+                    data-lang="en"
+                    title="English (USA)"
+                >
+                    🇺🇸
+                </button>
+            </div>
+        </nav>
+
+        <!-- ================= HERO ================= -->
+        <section
+            id="home"
+            class="relative h-screen flex flex-col justify-center items-center text-center overflow-hidden"
+        >
+            <img
+                src="/assets/img/hero_ballgun.webp"
+                class="absolute inset-0 w-full h-full object-cover opacity-60"
+                alt="Ballgun in azione"
+                loading="eager"
+            />
+            <div
+                class="absolute inset-0 bg-gradient-to-b from-black/40 to-black/90"
+            ></div>
+            <div class="relative z-10 px-4">
+                <h1
+                    class="text-3xl md:text-4xl font-bold mb-6"
+                    data-i18n="title"
+                >
+                    Wazlley – Ballgun Pro 2025
+                </h1>
+                <p
+                    class="text-lg md:text-2xl max-w-2xl mx-auto mb-4"
+                    data-i18n="subtitle"
+                >
+                    Made in Italy per volley professionale.
+                </p>
+                <a
+                    href="contact.html"
+                    class="mt-10 px-8 py-3 bg-yellow-400 text-black font-semibold rounded-xl hover:bg-yellow-300 transition"
+                    data-i18n="cta"
+                >
+                    Richiedi un preventivo
+                </a>
+            </div>
+        </section>
+
+        <!-- ================= SEZIONI DINAMICHE ================= -->
+        <main id="sections-container" class="flex flex-col"></main>
+
+        <!-- ================= TESTIMONIANZE ALLENATORI ================= -->
+        <section
+            id="coaches"
+            class="relative py-24 bg-black text-white overflow-hidden"
+        >
+            <h2
+                class="text-center text-2xl md:text-3xl font-bold mb-12"
+                data-i18n="coach_title"
+            >
+                Cosa dicono gli allenatori
+            </h2>
+
+            <div
+                class="relative max-w-6xl mx-auto flex items-center justify-center px-8"
+            >
+                <button
+                    id="carousel-prev"
+                    class="absolute left-0 z-10 bg-yellow-400/20 hover:bg-yellow-400/40 text-white rounded-full p-3 transition"
+                    aria-label="Testimonianza precedente"
+                >
+                    &#10094;
+                </button>
+
+                <div
+                    id="coach-carousel"
+                    class="relative flex justify-center items-center overflow-hidden w-full h-[420px]"
+                >
+                    <!-- coaches.js popolerà qui le card -->
+                </div>
+
+                <button
+                    id="carousel-next"
+                    class="absolute right-0 z-10 bg-yellow-400/20 hover:bg-yellow-400/40 text-white rounded-full p-3 transition"
+                    aria-label="Testimonianza successiva"
+                >
+                    &#10095;
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= FOOTER ================= -->
+        <footer
+            class="bg-black text-center py-6 text-sm text-gray-400 border-t border-gray-800"
+        >
+            <p>© 2025 Wazlley by Takeoff.pro — sport innovation</p>
+            <p>
+                <a href="mailto:info@takeoff.pro" class="text-yellow-400"
+                    >info@takeoff.pro</a
+                >
+            </p>
+        </footer>
+
+        <!-- ================= JS ================= -->
+        <script src="/assets/js/sections.js"></script>
+        <script src="/assets/js/loadSections.js"></script>
+        <script src="/assets/js/coaches.js"></script>
+        <script src="/assets/js/carousel.js"></script>
+        <script src="/assets/js/lang.js"></script>
+    </body>
+</html>

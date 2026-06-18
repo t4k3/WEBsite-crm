@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title data-i18n="privacy_title">Privacy Policy – Takeoff.pro</title>
+        <link rel="icon" href="/assets/img/favicon.ico" />
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+
+    <body class="bg-black text-white font-sans leading-relaxed">
+        <!-- ================= NAVBAR ================= -->
+        <nav
+            class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-black/70 backdrop-blur-md"
+        >
+            <!-- LOGO -->
+            <a href="index.html" class="flex items-center gap-2">
+                <img
+                    src="/assets/img/logo.png"
+                    alt="Logo Wazlley"
+                    class="h-10"
+                />
+            </a>
+
+            <!-- MENU LINKS -->
+            <div class="flex gap-4 text-sm font-light">
+                <a
+                    href="index.html#home"
+                    class="hover:text-yellow-400"
+                    data-i18n="nav_home"
+                    >Home</a
+                >
+                <a
+                    href="contact.html"
+                    class="hover:text-yellow-400"
+                    data-i18n="nav_contact"
+                    >Contatti</a
+                >
+                <a
+                    href="tutorials.html"
+                    class="hover:text-yellow-400"
+                    data-i18n="nav_tutorials"
+                    >Tutorial</a
+                >
+                <a
+                    href="privacy.html"
+                    class="hover:text-yellow-400 text-yellow-400 font-semibold"
+                    data-i18n="nav_privacy"
+                    >Privacy</a
+                >
+            </div>
+
+            <!-- LANGUAGE SWITCH -->
+            <div class="flex gap-2">
+                <button
+                    class="lang-switch text-lg hover:opacity-80 transition"
+                    data-lang="it"
+                    title="Italiano"
+                >
+                    🇮🇹
+                </button>
+                <button
+                    class="lang-switch text-lg hover:opacity-80 transition"
+                    data-lang="en"
+                    title="English (USA)"
+                >
+                    🇺🇸
+                </button>
+            </div>
+        </nav>
+
+        <!-- MAIN -->
+        <main class="pt-28 px-6 max-w-3xl mx-auto">
+            <h1
+                class="text-4xl font-bold mb-6 text-yellow-400"
+                data-i18n="privacy_heading"
+            >
+                Informativa sulla Privacy
+            </h1>
+
+            <div id="privacy-content" class="text-gray-300 space-y-6"></div>
+
+            <p class="mt-10 text-gray-500 text-sm" data-i18n="privacy_update">
+                Ultimo aggiornamento: Ottobre 2025
+            </p>
+        </main>
+
+        <!-- ================= FOOTER ================= -->
+        <footer
+            class="bg-gray-950 text-center py-6 text-sm text-gray-400 mt-16"
+        >
+            <p data-i18n="footer_text">
+                © 2025 Wazlley by Takeoff.pro — sport innovation
+            </p>
+            <p>
+                <a href="mailto:info@takeoff.pro" class="text-yellow-400"
+                    >info@takeoff.pro</a
+                >
+            </p>
+        </footer>
+
+        <!-- ================= SCRIPTS ================= -->
+        <script src="/assets/js/lang.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const sections = {
+                    it: [
+                        {
+                            title: "1. Titolare del trattamento",
+                            text: `
+                <strong>Takeoff.pro srl</strong> — sport innovation<br>
+                Email: <a href="mailto:info@takeoff.pro" class="text-yellow-400">info@takeoff.pro</a>
+              `,
+                        },
+                        {
+                            title: "2. Dati raccolti",
+                            text: `
+                I dati trattati comprendono: nome, email, paese, città, CAP, quantità richiesta e messaggi inviati tramite il modulo contatti.
+              `,
+                        },
+                        {
+                            title: "3. Finalità del trattamento",
+                            text: `
+                I dati vengono utilizzati esclusivamente per rispondere alle richieste di informazioni e fornire preventivi sui prodotti Takeoff.pro.
+              `,
+                        },
+                        {
+                            title: "4. Base giuridica",
+                            text: `Il trattamento si basa sul consenso espresso dall’utente tramite il modulo di contatto.`,
+                        },
+                        {
+                            title: "5. Conservazione dei dati",
+                            text: `I dati vengono conservati per il tempo necessario a gestire la richiesta e comunque non oltre 12 mesi.`,
+                        },
+                        {
+                            title: "6. Diritti dell’interessato",
+                            text: `
+                L’utente può richiedere accesso, rettifica o cancellazione dei propri dati scrivendo a
+                <a href="mailto:info@takeoff.pro" class="text-yellow-400">info@takeoff.pro</a>.
+              `,
+                        },
+                        {
+                            title: "7. Sicurezza",
+                            text: `
+                Il sito utilizza connessioni HTTPS e non memorizza dati sensibili su server pubblici.
+              `,
+                        },
+                        {
+                            title: "8. Cookie",
+                            text: `
+                Il sito utilizza solo cookie tecnici necessari al corretto funzionamento. Nessun cookie di profilazione è usato.
+              `,
+                        },
+                    ],
+                    en: [
+                        {
+                            title: "1. Data Controller",
+                            text: `
+                <strong>Takeoff.pro srl</strong> — sport innovation<br>
+                Email: <a href="mailto:info@takeoff.pro" class="text-yellow-400">info@takeoff.pro</a>
+              `,
+                        },
+                        {
+                            title: "2. Data collected",
+                            text: `
+                The personal data processed include: name, email, country, city, ZIP code, requested quantity, and messages sent through the contact form.
+              `,
+                        },
+                        {
+                            title: "3. Purpose of processing",
+                            text: `
+                Data are used exclusively to respond to information requests and provide product quotations for Takeoff.pro.
+              `,
+                        },
+                        {
+                            title: "4. Legal basis",
+                            text: `Processing is based on the user’s explicit consent given through the contact form.`,
+                        },
+                        {
+                            title: "5. Data retention",
+                            text: `Data are retained only as long as necessary to manage the request, and never beyond 12 months.`,
+                        },
+                        {
+                            title: "6. User rights",
+                            text: `
+                Users may request access, correction, or deletion of their data by writing to
+                <a href="mailto:info@takeoff.pro" class="text-yellow-400">info@takeoff.pro</a>.
+              `,
+                        },
+                        {
+                            title: "7. Security",
+                            text: `
+                The website uses HTTPS connections and does not store sensitive data on public servers.
+              `,
+                        },
+                        {
+                            title: "8. Cookies",
+                            text: `
+                This website uses only essential technical cookies required for functionality. No profiling cookies are used.
+              `,
+                        },
+                    ],
+                };
+
+                function renderPrivacy(lang) {
+                    const content = document.getElementById("privacy-content");
+                    content.innerHTML = "";
+                    const selected = sections[lang] || sections.it;
+                    selected.forEach((sec) => {
+                        const div = document.createElement("div");
+                        div.innerHTML = `
+              <h2 class="text-2xl font-semibold mt-8 mb-2 text-white">${sec.title}</h2>
+              <p class="text-gray-300">${sec.text}</p>
+            `;
+                        content.appendChild(div);
+                    });
+                    document.title =
+                        lang === "en"
+                            ? "Privacy Policy – Takeoff.pro"
+                            : "Informativa sulla Privacy – Takeoff.pro";
+                    document.documentElement.lang = lang;
+                }
+
+                // Imposta lingua iniziale
+                const currentLang =
+                    localStorage.getItem("lang") ||
+                    (navigator.language.startsWith("en") ? "en" : "it");
+                renderPrivacy(currentLang);
+
+                // Cambia lingua quando clicchi la bandiera
+                document.querySelectorAll(".lang-switch").forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        const lang = btn.dataset.lang;
+                        localStorage.setItem("lang", lang);
+                        renderPrivacy(lang);
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>
