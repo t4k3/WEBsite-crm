@@ -57,6 +57,10 @@ deploy/.env
 _live_backup/
 .lftp-log
 
+# ========== FOTO SORGENTE (non vanno sul sito) ==========
+images/
+assets/raw/
+
 # ========== BUILD / DIST ==========
 dist/
 build/
