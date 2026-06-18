@@ -218,6 +218,8 @@ $csrf = csrf_token();
                 window.scrollTo(0, 0);
             } else if (data.errors) {
                 showErrors($('#step1'), data.errors);
+            } else if (data.error === 'csrf') {
+                alert('La pagina era aperta da troppo tempo. Ricarica (Cmd+R) e riprova.');
             } else {
                 alert('Errore nell\'invio. Riprova.');
             }
@@ -247,6 +249,8 @@ $csrf = csrf_token();
                 showErrors($('#step2'), data.errors);
             } else if (data.error === 'not_found') {
                 alert('Sessione scaduta o ordine già inviato.');
+            } else if (data.error === 'csrf') {
+                alert('La pagina era aperta da troppo tempo. Ricarica (Cmd+R) e riprova.');
             } else {
                 alert('Errore nell\'invio. Riprova.');
             }
