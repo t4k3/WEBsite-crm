@@ -21,6 +21,6 @@ mysql --host=127.0.0.1 -uroot -e "CREATE DATABASE IF NOT EXISTS wazlley CHARACTE
 mysql --host=127.0.0.1 -uroot wazlley < "$ROOT/sql/schema.sql"
 
 # 3) Server PHP (esegue i .php e serve i file statici)
-echo "✅ Pronto → http://localhost:$PORT   (ordine: /ordine.php · CRM: /admin/)"
+echo "✅ Pronto → http://localhost:$PORT   (richiesta preventivo: /richiesta.php · CRM: /admin/)"
 echo "   Ctrl+C per fermare."
 php -S "localhost:$PORT" -t "$ROOT"
