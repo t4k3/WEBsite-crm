@@ -19,8 +19,12 @@ CREATE TABLE IF NOT EXISTS deals (
   quantity        INT UNSIGNED NOT NULL DEFAULT 1,
   variant         VARCHAR(40)  NULL,                        -- es. colore
   notes           TEXT         NULL,
+  want_call       TINYINT(1) NOT NULL DEFAULT 0,            -- il cliente vuole una call
+  availability    VARCHAR(120) NULL,                        -- quando è reperibile
   quoted_price    DECIMAL(10,2) NULL,
   currency        CHAR(3) NOT NULL DEFAULT 'EUR',
+  quote_sent_at   DATETIME NULL,                            -- quando hai inviato il preventivo
+  accepted_at     DATETIME NULL,                            -- quando il cliente ha accettato
 
   -- Step 2: fatturazione (IT + internazionale)
   customer_type   ENUM('azienda','privato') NULL,

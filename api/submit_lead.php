@@ -25,8 +25,8 @@ $token = gen_token();
 
 try {
     $st = db()->prepare(
-        'INSERT INTO deals (token, contact_name, email, phone, country, quantity, variant, notes, currency, consent, ip, user_agent)
-         VALUES (:token,:name,:email,:phone,:country,:qty,:variant,:notes,:currency,1,:ip,:ua)'
+        'INSERT INTO deals (token, contact_name, email, phone, country, quantity, variant, notes, want_call, availability, currency, consent, ip, user_agent)
+         VALUES (:token,:name,:email,:phone,:country,:qty,:variant,:notes,:wantcall,:avail,:currency,1,:ip,:ua)'
     );
     $st->execute([
         ':token' => $token,
@@ -37,6 +37,8 @@ try {
         ':qty' => $qty,
         ':variant' => post('variant'),
         ':notes' => post('notes'),
+        ':wantcall' => post('want_call') !== '' ? 1 : 0,
+        ':avail' => post('availability'),
         ':currency' => $cfg['currency'],
         ':ip' => client_ip(),
         ':ua' => substr($_SERVER['HTTP_USER_AGENT'] ?? '', 0, 255),

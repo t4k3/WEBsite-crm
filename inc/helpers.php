@@ -52,6 +52,12 @@ function gen_token(): string {
     return bin2hex(random_bytes(16)); // 32 caratteri hex
 }
 
+function base_url(): string {
+    $scheme = (($_SERVER['HTTPS'] ?? '') !== '' || ($_SERVER['SERVER_PORT'] ?? '') == 443) ? 'https' : 'http';
+    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    return $scheme . '://' . $host;
+}
+
 // Pipeline CRM (stato => etichetta leggibile), in ordine.
 function crm_statuses(): array {
     return [
