@@ -84,16 +84,16 @@ const coaches = [
     },
   },
 
-  // ===== Sospesi (in attesa della frase reale) =====
   {
     name: "Marcello Abbondanza",
     img: "/assets/img/coaches/coach_03.webp",
-    active: false,
     quote: {
-      it: "Ora le battute le tira la macchina.",
-      en: "The machine handles the serves now.",
+      it: "La uso in momenti analitici, concentrati in brevi periodi mirati: lì alza intensità e precisione del lavoro e fa davvero la differenza.",
+      en: "I use it in focused, analytical moments, concentrated into short targeted bursts: that's where it raises the intensity and precision of the work and really makes the difference.",
     },
   },
+
+  // ===== Sospesi (in attesa della frase reale) =====
   {
     name: "Enrico Barbolini",
     img: "/assets/img/coaches/coach_08.webp",
