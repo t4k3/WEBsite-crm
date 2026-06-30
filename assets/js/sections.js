@@ -2,7 +2,7 @@
 const wazlleySections = [
   {
     side: "left",
-    img: "/assets/img/ballgun_speed_test.webp",
+    img: "/assets/img/product/takeoff_full_front.webp",
     it: {
       title: "Velocità massima 115 km/h",
       text: "Motori brushless di ultima generazione garantiscono potenza e precisione nel lancio. Ogni traiettoria è controllata elettronicamente per simulare battute e attacchi reali."
@@ -14,7 +14,7 @@ const wazlleySections = [
   },
   {
     side: "right",
-    img: "/assets/img/ballgun_battery_pack.webp",
+    img: "/assets/img/product/takeoff_full_angle.webp",
     it: {
       title: "Batteria al sodio long life",
       text: "Il pacco batteria al sodio fornisce autonomia fino a 5 ore di utilizzo continuo, ideale per sessioni prolungate indoor o outdoor."
@@ -26,7 +26,7 @@ const wazlleySections = [
   },
   {
     side: "left",
-    img: "/assets/img/ballgun_safety_system.webp",
+    img: "/assets/img/product/takeoff_play_mode.webp",
     it: {
       title: "Sicurezza integrata e controllo Bluetooth",
       text: "I rulli in alluminio lisci e il sistema di rilevamento ostacoli assicurano massima sicurezza. Il controllo remoto via Bluetooth permette di gestire le funzioni senza contatto diretto."
@@ -38,7 +38,7 @@ const wazlleySections = [
   },
   {
     side: "right",
-    img: "/assets/img/effects_combo.webp",
+    img: "/assets/img/product/takeoff_controls.webp",
     it: {
       title: "Effetti programmabili",
       text: "Simula traiettorie reali: Float, Spin e Reverse Spin. Programma sequenze personalizzate per riprodurre gli allenamenti più complessi."
@@ -50,7 +50,7 @@ const wazlleySections = [
   },
   {
     side: "left",
-    img: "/assets/img/detail_rollers_aluminum.webp",
+    img: "/assets/img/product/takeoff_head_front.webp",
     it: {
       title: "Dettagli che fanno la differenza",
       text: "Ogni componente è studiato per durare nel tempo: motori bilanciati, materiali premium e design compatto rendono Wazlley il compagno ideale di ogni squadra."

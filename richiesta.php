@@ -10,27 +10,30 @@ $csrf = csrf_token();
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Richiedi un preventivo — Wazlley</title>
     <link rel="icon" href="/assets/img/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @font-face { font-family: "Fauna"; src: url("/assets/fonts/fauna-thin.woff2") format("woff2"); font-weight: 300; font-display: swap; }
-        body { font-family: "Fauna", "Helvetica Neue", Helvetica, Arial, sans-serif; background:#000; color:#fff; }
-        .field { width:100%; padding:.65rem; border-radius:.5rem; color:#000; }
-        .lbl { display:block; font-size:.8rem; color:#cbd5e1; margin-bottom:.25rem; }
-        .err { color:#f87171; font-size:.75rem; margin-top:.2rem; min-height:1rem; }
+        body { font-family: "Inter", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif; background:#ffffff; color:#15140f; }
+        h1, h2, h3 { font-family: "Archivo", "Inter", sans-serif; letter-spacing:-0.01em; }
+        .field { width:100%; padding:.65rem; border-radius:.5rem; color:#000; background:#fff; border:1px solid #d1d5db; }
+        .lbl { display:block; font-size:.8rem; color:#44443f; margin-bottom:.25rem; }
+        .err { color:#dc2626; font-size:.75rem; margin-top:.2rem; min-height:1rem; }
     </style>
 </head>
 <body>
-    <nav class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-black/70 backdrop-blur-md">
+    <nav class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-white/85 border-b border-gray-200 text-gray-800 backdrop-blur-md">
         <a href="index.html" class="flex items-center gap-2"><img src="/assets/img/logo.png" alt="Wazlley" class="h-10" /></a>
-        <a href="index.html" class="text-sm hover:text-yellow-400">← Home</a>
+        <a href="index.html" class="text-sm hover:text-lime-600">← Home</a>
     </nav>
 
     <main class="pt-28 pb-20 px-4 max-w-2xl mx-auto">
-        <form id="reqForm" class="space-y-4 bg-gray-900/50 p-6 rounded-2xl">
+        <form id="reqForm" class="space-y-4 bg-gray-50 border border-gray-200 p-6 rounded-2xl">
             <h1 class="text-2xl font-bold mb-1">Richiedi un preventivo</h1>
-            <p class="text-gray-400 text-sm mb-4">
+            <p class="text-gray-500 text-sm mb-4">
                 <?= e($cfg['name']) ?> — a partire da
-                <span class="text-yellow-400 font-semibold"><?= number_format((float)$cfg['price_from'], 0, ',', '.') ?> <?= e($cfg['currency']) ?></span> a unità.
+                <span class="text-lime-600 font-semibold"><?= number_format((float)$cfg['price_from'], 0, ',', '.') ?> <?= e($cfg['currency']) ?></span> a unità.
                 Ti invieremo un preventivo personalizzato.
             </p>
 
@@ -76,7 +79,7 @@ $csrf = csrf_token();
                 <textarea class="field" name="notes" rows="3"></textarea>
             </div>
 
-            <div class="bg-black/30 rounded-lg p-4 space-y-3">
+            <div class="bg-gray-100 border border-gray-200 rounded-lg p-4 space-y-3">
                 <label class="flex items-center gap-2 text-sm">
                     <input type="checkbox" name="want_call" value="1" id="wantCall" />
                     Vorrei essere ricontattato con una call
@@ -87,22 +90,22 @@ $csrf = csrf_token();
                 </div>
             </div>
 
-            <label class="flex items-start gap-2 text-sm text-gray-300">
+            <label class="flex items-start gap-2 text-sm text-gray-600">
                 <input type="checkbox" name="consent" value="1" class="mt-1" required />
                 <span>Acconsento al trattamento dei dati secondo la
-                    <a href="privacy.html" class="text-yellow-400 underline">Privacy Policy</a>.</span>
+                    <a href="privacy.html" class="text-lime-600 underline">Privacy Policy</a>.</span>
             </label>
             <div class="err" data-err="consent"></div>
 
-            <button type="submit" class="w-full bg-yellow-400 text-black px-6 py-3 rounded font-semibold hover:bg-yellow-300 transition">
+            <button type="submit" class="w-full bg-lime-400 text-black px-6 py-3 rounded font-semibold hover:bg-lime-300 transition">
                 Invia richiesta
             </button>
         </form>
 
-        <div id="done" class="hidden bg-gray-900/50 p-8 rounded-2xl text-center">
+        <div id="done" class="hidden bg-gray-50 border border-gray-200 p-8 rounded-2xl text-center">
             <h1 class="text-2xl font-bold mb-3">Grazie! ✅</h1>
-            <p class="text-gray-300">Abbiamo ricevuto la tua richiesta. Ti invieremo al più presto un preventivo personalizzato<span id="callNote"></span>.</p>
-            <a href="index.html" class="inline-block mt-6 px-6 py-3 bg-yellow-400 text-black rounded font-semibold">Torna alla Home</a>
+            <p class="text-gray-600">Abbiamo ricevuto la tua richiesta. Ti invieremo al più presto un preventivo personalizzato<span id="callNote"></span>.</p>
+            <a href="index.html" class="inline-block mt-6 px-6 py-3 bg-lime-400 text-black rounded font-semibold">Torna alla Home</a>
         </div>
     </main>
 

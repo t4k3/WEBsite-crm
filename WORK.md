@@ -20,21 +20,21 @@ Fonte di verità: **il locale**. Vedi `deploy/` per il sync.
 ## Backlog
 
 ### 🔴 Priorità alta — da fare prima del prossimo deploy
-- [x] **Immagini sezioni**: tutte e 5 ora sono cutout trasparenti di foto reali (pipeline `tools/photo2webp.sh`). CSS aggiornato a `object-contain` + `drop-shadow`.
-- [ ] **Foto batteria al sodio**: lo slot `ballgun_battery_pack.webp` mostra TEMPORANEAMENTE un cutout della macchina rosa (l'illustrazione AI è stata rimossa). Sostituire con una foto vera della batteria appena disponibile.
-- [ ] **Dettaglio "rollers"**: `detail_rollers_aluminum.webp` è la macchina intera; volendo, ritagliare un vero primo piano della testa/rulli.
+- [x] **Immagini sezioni**: ora usano i **render 3D ufficiali** (`assets/img/product/takeoff_*.webp`). I vecchi cutout `ballgun_*`/`effects_combo`/`detail_rollers_aluminum` sono stati rimossi. Render incorniciati in pannello `bg-[#2e2e2e]` arrotondato (loadSections.js).
+- [x] **Galleria prodotto**: 6 render 3D (`takeoff_full_front/_full_angle/_play_mode/_controls/_head_front/_head_rollers`) al posto dei placeholder.
+- [x] **Sorgenti render**: PNG originali archiviati con nomi coerenti in `images/renders/` (gitignorato).
 - [ ] **Immagini coach mancanti**: `coach_08/09/10/13.webp` (in attesa anche delle frasi autorizzate).
 - [ ] **Video tutorial**: sostituire `VIDEO_ID_1/2/3` con gli ID YouTube reali in `tutorials.html`.
 - [x] **Bug PHP**: rimossa la riga vuota prima di `<?php` in `sendmail_secure.php`.
-- [ ] **Rimuovere `check_wazlley.php`** dal server live (espone path/host e con `?mailtest=1` consente invio mail a chiunque). Già escluso dall'upload; verificare che non sia già online.
+- [x] **Rimuovere `check_wazlley.php`**: eliminato dal repo (`git rm`) e da disco. ⚠️ Verificare ancora che non sia rimasto online sul server live.
 
 ### 🟠 Priorità media — bug e pulizia
 - [x] **Bug lingua** in `assets/js/loadSections.js`: ternario parentesizzato.
-- [ ] **Traduzioni duplicate**: decidere fonte unica tra `assets/js/lang.js` (usato) e `assets/lang/*.json` (morti, non caricati). Rimuovere i JSON o passare a fetch da JSON.
-- [ ] **Navbar duplicata** in ogni pagina: valutare include di `partials/navbar.html` (oggi inutilizzato).
-- [ ] **Handler lingua tripli** (lang.js + loadSections.js + carousel.js) → unificare.
-- [ ] **Asset orfani**: `Float.webp`, `spin.webp`, `reverse.webp` esistono ma non sono usati (erano per la sezione effetti?).
-- [ ] **GSAP/parallax**: `[data-parallax]` e `--scrollY` non sono usati da nessun elemento → rimuovere o implementare.
+- [x] **Traduzioni duplicate**: rimossi i JSON morti (`assets/lang/*.json`). Fonte unica = `assets/js/lang.js`.
+- [x] **Navbar duplicata**: rimosso il partial inutilizzato `partials/navbar.html`. (La navbar resta duplicata nelle pagine `.html`: scelta accettabile per sito statico senza include server-side.)
+- [x] **Handler lingua tripli** → unificati: `lang.js` è l'unico gestore del click `.lang-switch` (delega su `body` + `window.renderSections`/`window.renderCoaches`). Rimossi gli handler duplicati in `loadSections.js` e `carousel.js`.
+- [x] **Asset orfani**: rimossi `Float.webp`, `spin.webp`, `reverse.webp`.
+- [x] **GSAP/parallax**: rimossa la regola morta `[data-parallax]`/`--scrollY` (mai usata). GSAP **resta**: è usato da `loadSections.js` per le animazioni ScrollTrigger delle sezioni.
 
 ### 🔵 Priorità bassa — SEO / performance / accessibilità
 - [ ] **Tailwind via CDN → build statico** prima del go-live definitivo (perf, no FOUC).

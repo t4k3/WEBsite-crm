@@ -40,7 +40,9 @@ $csrf = csrf_token();
 </head>
 <body class="min-h-screen flex items-center justify-center px-4">
     <form method="POST" class="w-full max-w-sm bg-gray-900 p-8 rounded-2xl space-y-4">
-        <h1 class="text-xl font-bold"><?= $firstRun ? 'Crea il primo accesso admin' : 'Wazlley CRM — Login' ?></h1>
+        <h1 class="text-xl font-bold"><?= $firstRun ? 'Crea il primo accesso admin' : 'Wazlley CRM — Login' ?>
+            <span class="ml-1 text-xs font-mono text-yellow-300/80 align-middle"><?= e(APP_VERSION) ?></span>
+        </h1>
         <?php if ($firstRun): ?>
             <p class="text-sm text-gray-400">Nessun utente presente. Imposta ora le tue credenziali di accesso.</p>
         <?php endif; ?>

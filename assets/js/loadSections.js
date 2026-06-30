@@ -16,15 +16,15 @@ document.addEventListener("DOMContentLoaded", () => {
       const text = section[lang] || section.it; // fallback in italiano
 
       const block = document.createElement("section");
-      block.className = `h-screen flex flex-col ${layout} items-center justify-center gap-10 px-6 bg-gradient-to-b from-black to-gray-900`;
+      block.className = `py-14 flex flex-col ${layout} items-center justify-center gap-8 px-6`;
       block.innerHTML = `
         <img src="${section.img}" alt="${text.title}"
-             class="w-full md:w-1/2 max-h-[75vh] object-contain drop-shadow-2xl"
+             class="h-[46vh] w-auto max-w-full object-contain rounded-2xl bg-[#333333] p-2 drop-shadow-xl"
              loading="lazy"
              onerror="this.src='/assets/img/placeholder.svg'">
         <div class="text-center md:text-left max-w-lg">
           <h2 class="text-2xl md:text-2xl font-bold mb-4">${text.title}</h2>
-          <p class="text-lg text-gray-300">${text.text}</p>
+          <p class="text-lg text-gray-600">${text.text}</p>
         </div>
       `;
       container.appendChild(block);
@@ -58,12 +58,5 @@ document.addEventListener("DOMContentLoaded", () => {
   // Prima renderizzazione
   renderSections(currentLang);
 
-  // Aggiorna lingua con le bandierine
-  document.querySelectorAll(".lang-switch").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      const lang = e.target.dataset.lang;
-      localStorage.setItem("lang", lang);
-      renderSections(lang);
-    });
-  });
+  // Il cambio lingua è gestito da lang.js (applyTranslations → window.renderSections).
 });

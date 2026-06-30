@@ -29,7 +29,7 @@ if ($deal && $_SERVER['REQUEST_METHOD'] === 'POST' && csrf_check($_POST['csrf'] 
         elseif ($v['status'] === 'invalid') { $vatValid = 0; $checkedAt = date('Y-m-d H:i:s');
             $viesMsg = 'Attenzione: la partita IVA non risulta valida in VIES. I dati sono stati salvati, la ricontrolleremo.'; $viesClass = 'text-amber-400'; }
         elseif ($v['status'] === 'error') {
-            $viesMsg = 'Non è stato possibile verificare ora la P.IVA su VIES: la controlleremo noi.'; $viesClass = 'text-gray-400'; }
+            $viesMsg = 'Non è stato possibile verificare ora la P.IVA su VIES: la controlleremo noi.'; $viesClass = 'text-gray-500'; }
     }
 
     db()->prepare(
@@ -45,11 +45,20 @@ if ($deal && $_SERVER['REQUEST_METHOD'] === 'POST' && csrf_check($_POST['csrf'] 
         $shipSame, post('ship_address'), post('ship_city'), post('ship_zip'), post('ship_province'), post('ship_country'),
         $deal['id'],
     ]);
+    // Compilare i dati di fatturazione = confermare l'ordine (salvo trattativa 'persa').
+    $newStatus = $deal['status'] === 'perso' ? 'perso' : 'ordine_confermato';
+    db()->prepare('UPDATE deals SET accepted_at = COALESCE(accepted_at, NOW()), status = ? WHERE id = ?')
+        ->execute([$newStatus, $deal['id']]);
     db()->prepare('INSERT INTO deal_history (deal_id, old_status, new_status, note, changed_by) VALUES (?,?,?,?,?)')
-        ->execute([$deal['id'], $deal['status'], $deal['status'], 'Dati di fatturazione inseriti dal cliente', 'cliente']);
+        ->execute([$deal['id'], $deal['status'], $newStatus, 'Ordine confermato e dati di fatturazione inseriti dal cliente', 'cliente']);
 
     $cfg = require __DIR__ . '/inc/product.php';
-    @mail($cfg['notify_to'], 'Dati fatturazione ricevuti — Wazlley', "Il cliente ha inserito i dati. Deal #{$deal['id']}\n", "From: noreply@takeoff.pro\r\n");
+    send_mail(
+        $cfg['notify_to'],
+        'Ordine confermato — dati fatturazione ricevuti — Wazlley',
+        "Il cliente ha confermato l'ordine e inserito i dati di fatturazione.\n"
+            . "Deal #{$deal['id']} — {$deal['contact_name']} ({$deal['email']})\n"
+    );
     $done = true;
 
     // ricarico i dati aggiornati per il riepilogo
@@ -68,35 +77,38 @@ function f($d, $k) { return e($d[$k] ?? ''); }
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>I tuoi dati — Wazlley</title>
     <link rel="icon" href="/assets/img/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @font-face { font-family: "Fauna"; src: url("/assets/fonts/fauna-thin.woff2") format("woff2"); font-weight: 300; font-display: swap; }
-        body { font-family: "Fauna", "Helvetica Neue", Helvetica, Arial, sans-serif; background:#000; color:#fff; }
-        .field { width:100%; padding:.6rem; border-radius:.5rem; color:#000; }
-        .lbl { display:block; font-size:.75rem; color:#cbd5e1; margin-bottom:.2rem; }
+        body { font-family: "Inter", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif; background:#ffffff; color:#15140f; }
+        h1, h2, h3 { font-family: "Archivo", "Inter", sans-serif; letter-spacing:-0.01em; }
+        .field { width:100%; padding:.6rem; border-radius:.5rem; color:#000; background:#fff; border:1px solid #d1d5db; }
+        .lbl { display:block; font-size:.75rem; color:#44443f; margin-bottom:.2rem; }
     </style>
 </head>
 <body>
-    <nav class="fixed top-0 w-full z-50 flex items-center px-6 py-4 bg-black/70 backdrop-blur-md">
+    <nav class="fixed top-0 w-full z-50 flex items-center px-6 py-4 bg-white/85 border-b border-gray-200 text-gray-800 backdrop-blur-md">
         <a href="index.html"><img src="/assets/img/logo.png" alt="Wazlley" class="h-10" /></a>
     </nav>
     <main class="pt-28 pb-20 px-4 max-w-2xl mx-auto">
     <?php if (!$deal): ?>
-        <div class="bg-gray-900/50 p-8 rounded-2xl text-center">
+        <div class="bg-gray-50 border border-gray-200 p-8 rounded-2xl text-center">
             <h1 class="text-2xl font-bold mb-2">Link non valido</h1>
-            <p class="text-gray-400">Il link per l'inserimento dati non è corretto.</p>
+            <p class="text-gray-500">Il link per l'inserimento dati non è corretto.</p>
         </div>
     <?php elseif ($done): ?>
-        <div class="bg-gray-900/50 p-8 rounded-2xl text-center">
-            <h1 class="text-2xl font-bold mb-3">Dati salvati ✅</h1>
+        <div class="bg-gray-50 border border-gray-200 p-8 rounded-2xl text-center">
+            <h1 class="text-2xl font-bold mb-3">Ordine confermato ✅</h1>
             <?php if ($viesMsg): ?><p class="<?= $viesClass ?> mb-2"><?= e($viesMsg) ?></p><?php endif; ?>
-            <p class="text-gray-300">Grazie, abbiamo ricevuto i tuoi dati di fatturazione. Ti contatteremo per finalizzare l'ordine.</p>
-            <a href="<?= e('preventivo.php?token=' . $token) ?>" class="inline-block mt-6 text-yellow-400 underline">Torna al preventivo</a>
+            <p class="text-gray-600">Grazie, abbiamo ricevuto la tua conferma e i dati di fatturazione. Ti contatteremo a breve per finalizzare la spedizione.</p>
+            <a href="<?= e('preventivo.php?token=' . $token) ?>" class="inline-block mt-6 text-lime-600 underline">Torna al preventivo</a>
         </div>
     <?php else: ?>
-        <form method="POST" class="space-y-4 bg-gray-900/50 p-6 rounded-2xl">
-            <h1 class="text-2xl font-bold mb-1">I tuoi dati di fatturazione</h1>
-            <p class="text-gray-400 text-sm mb-4">Ciao <?= e($deal['contact_name']) ?>, completa i dati per la fattura. La partita IVA (se UE) viene verificata automaticamente.</p>
+        <form method="POST" class="space-y-4 bg-gray-50 border border-gray-200 p-6 rounded-2xl">
+            <h1 class="text-2xl font-bold mb-1">Completa l'ordine</h1>
+            <p class="text-gray-500 text-sm mb-4">Ciao <?= e($deal['contact_name']) ?>, inserisci i dati di fatturazione per <strong>confermare l'ordine</strong>. La partita IVA (se UE) viene verificata automaticamente.</p>
             <input type="hidden" name="csrf" value="<?= e($csrf) ?>" />
 
             <div class="flex gap-4 text-sm">
@@ -122,7 +134,7 @@ function f($d, $k) { return e($d[$k] ?? ''); }
                 <input class="field" name="bill_country" placeholder="Paese" value="<?= f($deal,'bill_country') ?>" />
             </div>
 
-            <label class="flex items-center gap-2 text-sm text-gray-300">
+            <label class="flex items-center gap-2 text-sm text-gray-600">
                 <input type="checkbox" name="ship_same" value="1" id="shipSame" <?= $deal['ship_same'] ? 'checked' : '' ?> /> Spedizione allo stesso indirizzo
             </label>
             <div id="shipFields" class="space-y-3 <?= $deal['ship_same'] ? 'hidden' : '' ?>">
@@ -136,7 +148,7 @@ function f($d, $k) { return e($d[$k] ?? ''); }
                 </div>
             </div>
 
-            <button type="submit" class="w-full bg-yellow-400 text-black px-6 py-3 rounded font-semibold hover:bg-yellow-300 transition">Salva i miei dati</button>
+            <button type="submit" class="w-full bg-lime-400 text-black px-6 py-3 rounded font-semibold hover:bg-lime-300 transition">Conferma l'ordine</button>
         </form>
         <script>
             document.getElementById('shipSame').addEventListener('change', function(){ document.getElementById('shipFields').classList.toggle('hidden', this.checked); });

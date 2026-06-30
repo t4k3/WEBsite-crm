@@ -87,3 +87,6 @@ cache/
 
 # ========== ALTRI ==========
 .htpasswd
+
+# Credenziali SMTP (mai in git)
+config/smtp.php

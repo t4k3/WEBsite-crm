@@ -10,9 +10,8 @@ const translations = {
     nav_privacy: "Privacy",
 
     // HOME / HERO
-    title: "Wazlley – Ballgun Pro 2025",
-    subtitle:
-      "L’innovazione italiana per l’allenamento nel volley professionale.",
+    title: "Takeoff.pro Volleyball Machine",
+    subtitle: "sport innovation",
     cta: "Richiedi un preventivo",
 
     // SEZIONI (features)
@@ -20,6 +19,21 @@ const translations = {
     battery: "Batteria long life fino a 5 ore",
     safe: "Sicurezza integrata e controllo Bluetooth",
     learn_more: "Guarda i tutorial",
+
+    // GALLERIA PRODOTTO
+    gallery_title: "Il prodotto dal vivo",
+    gallery_sub: "Il prodotto da ogni angolazione, dai render 3D ufficiali.",
+    gallery_cap_front: "Vista frontale",
+    gallery_cap_angle: "Vista laterale",
+    gallery_cap_play: "Pronta al lancio",
+    gallery_cap_controls: "Display e controlli",
+    gallery_cap_head: "Testa di lancio",
+    gallery_cap_rollers: "Rulli di lancio",
+    gallery_cap_photo: "La macchina",
+
+    // VIDEO + SPECIFICHE
+    video_title: "Guarda in azione",
+    specs_title: "Caratteristiche e specifiche",
 
     // COACH / CAROUSEL
     coach_title: "Cosa dicono gli allenatori",
@@ -42,9 +56,9 @@ const translations = {
     form_quantity: "Quantità",
     form_message: "Note aggiuntive",
     privacy_consent:
-      'Acconsento al trattamento dei dati secondo la <a href="privacy.html" class="text-yellow-400 underline hover:text-yellow-300">Privacy Policy</a>.',
+      'Acconsento al trattamento dei dati secondo la <a href="privacy.html" class="text-lime-600 underline hover:text-lime-700">Privacy Policy</a>.',
     contact_alt:
-      'Oppure scrivi a <a href="mailto:info@takeoff.pro" class="text-yellow-400">info@takeoff.pro</a>',
+      'Oppure scrivi a <a href="mailto:info@takeoff.pro" class="text-lime-600">info@takeoff.pro</a>',
 
     // PRIVACY PAGE
     privacy_title: "Privacy Policy – Takeoff.pro",
@@ -70,8 +84,8 @@ const translations = {
     nav_privacy: "Privacy Policy",
 
     // HOME / HERO
-    title: "Wazlley – Ballgun Pro 2025",
-    subtitle: "Italian innovation for elite volleyball training.",
+    title: "Takeoff.pro Volleyball Machine",
+    subtitle: "sport innovation",
     cta: "Request a quote",
 
     // SECTIONS (features)
@@ -79,6 +93,21 @@ const translations = {
     battery: "Long-life sodium battery — up to 5 hours",
     safe: "Integrated safety and Bluetooth control",
     learn_more: "Watch tutorials",
+
+    // PRODUCT GALLERY
+    gallery_title: "The product up close",
+    gallery_sub: "The product from every angle, from the official 3D renders.",
+    gallery_cap_front: "Front view",
+    gallery_cap_angle: "Side view",
+    gallery_cap_play: "Ready to launch",
+    gallery_cap_controls: "Display & controls",
+    gallery_cap_head: "Throwing head",
+    gallery_cap_rollers: "Launch rollers",
+    gallery_cap_photo: "The machine",
+
+    // VIDEO + SPECS
+    video_title: "See it in action",
+    specs_title: "Features & specs",
 
     // COACH / CAROUSEL
     coach_title: "What coaches say",
@@ -101,9 +130,9 @@ const translations = {
     form_quantity: "Quantity",
     form_message: "Additional notes",
     privacy_consent:
-      'I consent to data processing according to the <a href="privacy.html" class="text-yellow-400 underline hover:text-yellow-300">Privacy Policy</a>.',
+      'I consent to data processing according to the <a href="privacy.html" class="text-lime-600 underline hover:text-lime-700">Privacy Policy</a>.',
     contact_alt:
-      'Or write to <a href="mailto:info@takeoff.pro" class="text-yellow-400">info@takeoff.pro</a>',
+      'Or write to <a href="mailto:info@takeoff.pro" class="text-lime-600">info@takeoff.pro</a>',
 
     // PRIVACY PAGE
     privacy_title: "Privacy Policy – Takeoff.pro",
@@ -146,6 +175,7 @@ function applyTranslations(lang) {
     if (typeof window.renderSections === "function")
       window.renderSections(lang);
     if (typeof window.renderCoaches === "function") window.renderCoaches(lang);
+    if (typeof window.renderSpecs === "function") window.renderSpecs(lang);
   }, 200);
 }
 

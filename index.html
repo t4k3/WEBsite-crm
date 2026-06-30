@@ -10,33 +10,59 @@
         <title>Wazlley – Ballgun Pro 2025</title>
 
         <link rel="icon" href="/assets/img/favicon.ico" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossorigin
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Inter:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
         <style>
-            @font-face {
-                font-family: "Fauna";
-                src: url("/assets/fonts/fauna-thin.woff2") format("woff2");
-                font-weight: 300;
-                font-style: normal;
-                font-display: swap;
+            html {
+                background-color: #ffffff;
+                scroll-behavior: smooth;
             }
 
             body {
                 font-family:
-                    "Fauna", "Helvetica Neue", Helvetica, Arial, sans-serif;
-                background-color: black;
-                color: white;
+                    "Inter", system-ui, -apple-system, "Helvetica Neue",
+                    Arial, sans-serif;
+                background-color: transparent;
+                color: #15140f;
                 overflow-x: hidden;
             }
 
-            html {
-                scroll-behavior: smooth;
+            /* Render del prodotto come filigrana di sfondo, dietro a tutto:
+               si intravede negli spazi vuoti tra le sezioni/card. */
+            .page-bg {
+                position: fixed;
+                inset: 0;
+                z-index: -1;
+                background-image: url("/assets/img/product/takeoff_full_front.webp");
+                background-repeat: no-repeat;
+                background-position: center center;
+                background-size: auto 88%;
+                opacity: 0.07;
+                pointer-events: none;
             }
 
-            [data-parallax] {
-                transform: translateY(var(--scrollY, 0));
+            h1,
+            h2,
+            h3 {
+                font-family: "Archivo", "Inter", sans-serif;
+                letter-spacing: -0.01em;
+            }
+
+            #home h1 {
+                text-transform: uppercase;
+                letter-spacing: -0.02em;
             }
 
             button.lang-switch {
@@ -50,7 +76,7 @@
             }
 
             button.lang-switch:focus {
-                outline: 2px solid #facc15;
+                outline: 2px solid #a3e635;
                 outline-offset: 2px;
             }
 
@@ -61,9 +87,12 @@
     </head>
 
     <body>
+        <!-- Filigrana di sfondo (render prodotto) dietro a tutto -->
+        <div class="page-bg" aria-hidden="true"></div>
+
         <!-- ================= NAVBAR ================= -->
         <nav
-            class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-black/70 backdrop-blur-md"
+            class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-white/85 backdrop-blur-md border-b border-gray-200 text-gray-800"
         >
             <a href="index.html" class="flex items-center gap-2">
                 <img
@@ -76,25 +105,25 @@
             <div class="flex gap-4 text-sm font-light">
                 <a
                     href="#home"
-                    class="hover:text-yellow-400"
+                    class="hover:text-lime-600"
                     data-i18n="nav_home"
                     >Home</a
                 >
                 <a
                     href="contact.html"
-                    class="hover:text-yellow-400"
+                    class="hover:text-lime-600"
                     data-i18n="nav_contact"
                     >Contatti</a
                 >
                 <a
                     href="tutorials.html"
-                    class="hover:text-yellow-400"
+                    class="hover:text-lime-600"
                     data-i18n="nav_tutorials"
                     >Tutorial</a
                 >
                 <a
                     href="privacy.html"
-                    class="hover:text-yellow-400"
+                    class="hover:text-lime-600"
                     data-i18n="nav_privacy"
                     >Privacy</a
                 >
@@ -118,64 +147,50 @@
             </div>
         </nav>
 
-        <!-- ================= HERO ================= -->
+        <!-- ================= HERO (titolo + CTA) ================= -->
         <section
             id="home"
-            class="relative h-screen flex flex-col justify-center items-center text-center overflow-hidden"
+            class="relative pt-36 pb-24 px-4 text-center"
         >
-            <img
-                src="/assets/img/hero_ballgun.webp"
-                class="absolute inset-0 w-full h-full object-cover opacity-60"
-                alt="Ballgun in azione"
-                loading="eager"
-            />
-            <div
-                class="absolute inset-0 bg-gradient-to-b from-black/40 to-black/90"
-            ></div>
-            <div class="relative z-10 px-4">
-                <h1
-                    class="text-3xl md:text-4xl font-bold mb-6"
-                    data-i18n="title"
-                >
-                    Wazlley – Ballgun Pro 2025
-                </h1>
-                <p
-                    class="text-lg md:text-2xl max-w-2xl mx-auto mb-4"
-                    data-i18n="subtitle"
-                >
-                    Made in Italy per volley professionale.
-                </p>
-                <a
-                    href="richiesta.php"
-                    class="mt-10 px-8 py-3 bg-yellow-400 text-black font-semibold rounded-xl hover:bg-yellow-300 transition"
-                    data-i18n="cta"
-                >
-                    Richiedi un preventivo
-                </a>
-            </div>
+            <h1
+                class="text-3xl md:text-4xl font-bold mb-4"
+                data-i18n="title"
+            >
+                Takeoff.pro Volleyball Machine
+            </h1>
+            <p
+                class="text-lg md:text-2xl max-w-2xl mx-auto mb-6 text-gray-500 uppercase tracking-[0.2em]"
+                data-i18n="subtitle"
+            >
+                sport innovation
+            </p>
+            <a
+                href="richiesta.php"
+                class="inline-block px-8 py-3 bg-lime-400 text-black font-semibold rounded-xl hover:bg-lime-300 transition"
+                data-i18n="cta"
+            >
+                Richiedi un preventivo
+            </a>
         </section>
 
-        <!-- ================= SEZIONI DINAMICHE ================= -->
-        <main id="sections-container" class="flex flex-col"></main>
-
-        <!-- ================= TESTIMONIANZE ALLENATORI ================= -->
+        <!-- ========= TESTIMONIANZE ALLENATORI (in alto, compatto) ========= -->
         <section
             id="coaches"
-            class="relative py-24 bg-black text-white overflow-hidden"
+            class="relative py-10 overflow-hidden"
         >
             <h2
-                class="text-center text-2xl md:text-3xl font-bold mb-12"
+                class="text-center text-xl md:text-2xl font-bold mb-6"
                 data-i18n="coach_title"
             >
                 Cosa dicono gli allenatori
             </h2>
 
             <div
-                class="relative max-w-6xl mx-auto flex items-center justify-center px-8"
+                class="relative max-w-4xl mx-auto flex items-center justify-center px-8"
             >
                 <button
                     id="carousel-prev"
-                    class="absolute left-0 z-10 bg-yellow-400/20 hover:bg-yellow-400/40 text-white rounded-full p-3 transition"
+                    class="absolute left-0 z-10 bg-lime-400/30 hover:bg-lime-400/60 text-gray-800 rounded-full p-2 transition"
                     aria-label="Testimonianza precedente"
                 >
                     &#10094;
@@ -183,14 +198,14 @@
 
                 <div
                     id="coach-carousel"
-                    class="relative flex justify-center items-center overflow-hidden w-full h-[420px]"
+                    class="relative flex justify-center items-center overflow-hidden w-full h-[300px]"
                 >
                     <!-- coaches.js popolerà qui le card -->
                 </div>
 
                 <button
                     id="carousel-next"
-                    class="absolute right-0 z-10 bg-yellow-400/20 hover:bg-yellow-400/40 text-white rounded-full p-3 transition"
+                    class="absolute right-0 z-10 bg-lime-400/30 hover:bg-lime-400/60 text-gray-800 rounded-full p-2 transition"
                     aria-label="Testimonianza successiva"
                 >
                     &#10095;
@@ -198,23 +213,204 @@
             </div>
         </section>
 
+        <!-- ================= SEZIONI DINAMICHE ================= -->
+        <main id="sections-container" class="flex flex-col"></main>
+
+        <!-- ================= VIDEO DEMO ================= -->
+        <section id="demo" class="relative py-14 px-6">
+            <h2
+                class="text-center text-2xl md:text-3xl font-bold mb-8"
+                data-i18n="video_title"
+            >
+                Guarda in azione
+            </h2>
+            <div
+                class="max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-lg border border-gray-200 bg-[#2e2e2e]"
+            >
+                <video
+                    class="w-full block"
+                    controls
+                    playsinline
+                    preload="metadata"
+                    poster="/assets/img/product/takeoff_photo.webp"
+                >
+                    <source
+                        src="/assets/video/takeoff_demo.mp4"
+                        type="video/mp4"
+                    />
+                </video>
+            </div>
+        </section>
+
+        <!-- ================= GALLERIA PRODOTTO ================= -->
+        <section
+            id="gallery"
+            class="py-14 px-6"
+        >
+            <h2
+                class="text-center text-2xl md:text-3xl font-bold mb-4"
+                data-i18n="gallery_title"
+            >
+                Il prodotto dal vivo
+            </h2>
+            <p
+                class="text-center text-gray-500 max-w-2xl mx-auto mb-8"
+                data-i18n="gallery_sub"
+            >
+                Il prodotto da ogni angolazione, dai render 3D ufficiali.
+            </p>
+
+            <div
+                class="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-5xl mx-auto"
+            >
+                <figure class="relative rounded-2xl overflow-hidden group bg-white border border-gray-200">
+                    <img
+                        src="/assets/img/product/takeoff_photo.webp"
+                        alt="Takeoff.pro Volleyball Machine — foto reale"
+                        loading="lazy"
+                        class="w-full aspect-[3/4] object-contain p-2 transition-transform duration-500 group-hover:scale-105"
+                        onerror="this.src='/assets/img/placeholder.svg'"
+                    />
+                    <figcaption
+                        class="absolute bottom-0 inset-x-0 bg-white/80 backdrop-blur-sm p-2 text-xs text-gray-700 text-center font-medium"
+                        data-i18n="gallery_cap_photo"
+                    >
+                        La macchina
+                    </figcaption>
+                </figure>
+
+                <figure class="relative rounded-2xl overflow-hidden group bg-[#333333]">
+                    <img
+                        src="/assets/img/product/takeoff_full_front.webp"
+                        alt="Takeoff.pro Volleyball Machine — vista frontale"
+                        loading="lazy"
+                        class="w-full aspect-[3/4] object-contain transition-transform duration-500 group-hover:scale-105"
+                        onerror="this.src='/assets/img/placeholder.svg'"
+                    />
+                    <figcaption
+                        class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-sm text-white"
+                        data-i18n="gallery_cap_front"
+                    >
+                        Vista frontale
+                    </figcaption>
+                </figure>
+
+                <figure class="relative rounded-2xl overflow-hidden group bg-[#333333]">
+                    <img
+                        src="/assets/img/product/takeoff_full_angle.webp"
+                        alt="Takeoff.pro Volleyball Machine — vista laterale"
+                        loading="lazy"
+                        class="w-full aspect-[3/4] object-contain transition-transform duration-500 group-hover:scale-105"
+                        onerror="this.src='/assets/img/placeholder.svg'"
+                    />
+                    <figcaption
+                        class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-sm text-white"
+                        data-i18n="gallery_cap_angle"
+                    >
+                        Vista laterale
+                    </figcaption>
+                </figure>
+
+                <figure class="relative rounded-2xl overflow-hidden group bg-[#333333]">
+                    <img
+                        src="/assets/img/product/takeoff_play_mode.webp"
+                        alt="Takeoff.pro Volleyball Machine — pronta al lancio"
+                        loading="lazy"
+                        class="w-full aspect-[3/4] object-contain transition-transform duration-500 group-hover:scale-105"
+                        onerror="this.src='/assets/img/placeholder.svg'"
+                    />
+                    <figcaption
+                        class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-sm text-white"
+                        data-i18n="gallery_cap_play"
+                    >
+                        Pronta al lancio
+                    </figcaption>
+                </figure>
+
+                <figure class="relative rounded-2xl overflow-hidden group bg-[#333333]">
+                    <img
+                        src="/assets/img/product/takeoff_controls.webp"
+                        alt="Takeoff.pro Volleyball Machine — display e controlli"
+                        loading="lazy"
+                        class="w-full aspect-[3/4] object-contain transition-transform duration-500 group-hover:scale-105"
+                        onerror="this.src='/assets/img/placeholder.svg'"
+                    />
+                    <figcaption
+                        class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-sm text-white"
+                        data-i18n="gallery_cap_controls"
+                    >
+                        Display e controlli
+                    </figcaption>
+                </figure>
+
+                <figure class="relative rounded-2xl overflow-hidden group bg-[#333333]">
+                    <img
+                        src="/assets/img/product/takeoff_head_front.webp"
+                        alt="Takeoff.pro Volleyball Machine — testa di lancio"
+                        loading="lazy"
+                        class="w-full aspect-[3/4] object-contain transition-transform duration-500 group-hover:scale-105"
+                        onerror="this.src='/assets/img/placeholder.svg'"
+                    />
+                    <figcaption
+                        class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-sm text-white"
+                        data-i18n="gallery_cap_head"
+                    >
+                        Testa di lancio
+                    </figcaption>
+                </figure>
+
+                <figure class="relative rounded-2xl overflow-hidden group bg-[#333333]">
+                    <img
+                        src="/assets/img/product/takeoff_head_rollers.webp"
+                        alt="Takeoff.pro Volleyball Machine — rulli di lancio"
+                        loading="lazy"
+                        class="w-full aspect-[3/4] object-contain transition-transform duration-500 group-hover:scale-105"
+                        onerror="this.src='/assets/img/placeholder.svg'"
+                    />
+                    <figcaption
+                        class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-sm text-white"
+                        data-i18n="gallery_cap_rollers"
+                    >
+                        Rulli di lancio
+                    </figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- ================= CARATTERISTICHE + SPECIFICHE ================= -->
+        <section id="specs" class="relative py-14 px-6">
+            <h2
+                class="text-center text-2xl md:text-3xl font-bold mb-8"
+                data-i18n="specs_title"
+            >
+                Caratteristiche e specifiche
+            </h2>
+            <div
+                id="specs-table"
+                class="max-w-2xl mx-auto bg-white/70 border border-gray-200 rounded-2xl px-6 py-2 shadow-sm"
+            >
+                <!-- specs.js popola la tabella -->
+            </div>
+        </section>
+
         <!-- ================= FOOTER ================= -->
         <footer
-            class="bg-black text-center py-6 text-sm text-gray-400 border-t border-gray-800"
+            class="bg-gray-50 text-center py-6 text-sm text-gray-500 border-t border-gray-200"
         >
             <p>© 2025 Wazlley by Takeoff.pro — sport innovation</p>
             <p>
-                <a href="mailto:info@takeoff.pro" class="text-yellow-400"
+                <a href="mailto:info@takeoff.pro" class="text-lime-600"
                     >info@takeoff.pro</a
                 >
             </p>
         </footer>
 
         <!-- ================= JS ================= -->
-        <script src="/assets/js/sections.js"></script>
-        <script src="/assets/js/loadSections.js"></script>
-        <script src="/assets/js/coaches.js"></script>
-        <script src="/assets/js/carousel.js"></script>
-        <script src="/assets/js/lang.js"></script>
+        <script src="/assets/js/specs.js?v=22"></script>
+        <script src="/assets/js/sections.js?v=22"></script>
+        <script src="/assets/js/loadSections.js?v=22"></script>
+        <script src="/assets/js/coaches.js?v=22"></script>
+        <script src="/assets/js/carousel.js?v=22"></script>
+        <script src="/assets/js/lang.js?v=22"></script>
     </body>
 </html>

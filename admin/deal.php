@@ -25,6 +25,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_check($_POST['csrf'] ?? null))
             exit;
         }
 
+        // Nota evento: aggiunge una riga allo storico (senza cambiare stato)
+        if ($action === 'add_note') {
+            $note = post('event_note');
+            if ($note !== '') {
+                db()->prepare('INSERT INTO deal_history (deal_id, old_status, new_status, note, changed_by) VALUES (?,?,?,?,?)')
+                    ->execute([$id, $deal['status'], $deal['status'], $note, current_admin()]);
+            }
+            header('Location: deal.php?id=' . $id . '#storico');
+            exit;
+        }
+
         // Cambio stato rapido da pulsante (non tocca gli altri campi)
         $setTo = $_POST['set_to'] ?? '';
         if (isset($statuses[$setTo])) {
@@ -64,7 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_check($_POST['csrf'] ?? null))
 
         $price = post('quoted_price') === '' ? null : (float) str_replace(',', '.', post('quoted_price'));
         $shipSame = isset($_POST['ship_same']) ? 1 : 0;
-        $newStatus = isset($statuses[$_POST['status'] ?? '']) ? $_POST['status'] : $deal['status'];
+        // Lo stato si cambia coi pulsanti rapidi (set_to); qui resta invariato salvo invio preventivo.
+        $newStatus = $deal['status'];
 
         // send_quote forza lo stato e richiede il prezzo
         $sending = ($action === 'send_quote');
@@ -102,8 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_check($_POST['csrf'] ?? null))
             $body = "Ciao {$deal['contact_name']},\n\nin allegato la nostra offerta per {$cfg['name']}"
                 . " (q.tà {$deal['quantity']}, colore {$deal['variant']}).\n"
                 . "Prezzo: " . number_format((float)$price, 2, ',', '.') . " {$deal['currency']}\n\n"
-                . "Vedi e accetta il preventivo qui:\n$link\n\nGrazie,\nTakeoff.pro";
-            @mail($deal['email'], 'Il tuo preventivo Wazlley', $body, "From: noreply@takeoff.pro\r\nReply-To: {$cfg['notify_to']}\r\n");
+                . "Vedi il prezzo e completa l'ordine (inserendo i dati di fatturazione) qui:\n$link\n\nGrazie,\nTakeoff.pro";
+            send_mail($deal['email'], 'Il tuo preventivo Wazlley', $body, $cfg['notify_to']);
             header('Location: deal.php?id=' . $id . '&sent=1');
             exit;
         }
@@ -145,7 +157,7 @@ function inp($name, $label, $val, $w = '') {
     <script src="https://cdn.tailwindcss.com"></script>
     <style>body{background:#0b0f19;color:#e5e7eb;font-family:system-ui,Arial,sans-serif}</style>
 </head>
-<body class="p-6 max-w-5xl mx-auto">
+<body class="p-6 max-w-6xl mx-auto">
     <a href="index.php" class="text-yellow-400 text-sm">← Tutte le trattative</a>
     <h1 class="text-xl font-bold mt-2 mb-4">#<?= (int)$d['id'] ?> · <?= e($d['contact_name']) ?>
         <span class="px-2 py-0.5 rounded bg-gray-700 text-xs align-middle"><?= e($statuses[$d['status']] ?? $d['status']) ?></span>
@@ -220,105 +232,141 @@ function inp($name, $label, $val, $w = '') {
         </div>
     </div>
 
+    <?php $hasBilling = ($d['customer_type'] || $d['company_name'] || $d['vat_number'] || $d['tax_code'] || $d['bill_address']); ?>
     <div class="grid md:grid-cols-2 gap-8">
-        <section>
-            <h2 class="font-semibold mb-2 text-gray-300">Richiesta</h2>
-            <div class="text-sm">
-                <?php
-                row('Creato il', $d['created_at']);
-                row('Email', $d['email']);
-                row('Telefono', $d['phone']);
-                row('Paese', $d['country']);
-                row('Quantità', $d['quantity']);
-                row('Colore', $d['variant']);
-                row('Vuole una call', $d['want_call'] ? 'Sì' : '');
-                row('Disponibilità', $d['availability']);
-                row('Note cliente', $d['notes']);
-                row('Preventivo inviato il', $d['quote_sent_at']);
-                row('Accettato il', $d['accepted_at']);
-                ?>
+
+        <!-- ===== SINISTRA: richiesta · nota evento · storico ===== -->
+        <section class="space-y-6">
+            <div>
+                <h2 class="font-semibold mb-2 text-gray-300">Richiesta</h2>
+                <div class="text-sm">
+                    <?php
+                    row('Creato il', $d['created_at']);
+                    row('Email', $d['email']);
+                    row('Telefono', $d['phone']);
+                    row('Paese', $d['country']);
+                    row('Quantità', $d['quantity']);
+                    row('Colore', $d['variant']);
+                    row('Vuole una call', $d['want_call'] ? 'Sì' : '');
+                    row('Disponibilità', $d['availability']);
+                    row('Note cliente', $d['notes']);
+                    row('Preventivo inviato il', $d['quote_sent_at']);
+                    row('Accettato il', $d['accepted_at']);
+                    ?>
+                </div>
+                <div class="mt-3 text-xs text-gray-500">
+                    Link preventivo cliente:<br>
+                    <a href="<?= e($link) ?>" target="_blank" class="text-yellow-400 break-all"><?= e($link) ?></a>
+                </div>
             </div>
-            <div class="mt-4 text-xs text-gray-500">
-                Link preventivo cliente:<br>
-                <a href="<?= e($link) ?>" target="_blank" class="text-yellow-400 break-all"><?= e($link) ?></a>
+
+            <div id="storico" class="bg-gray-900 p-4 rounded-xl">
+                <h2 class="font-semibold mb-3 text-gray-300">Storico</h2>
+
+                <!-- Nota evento → aggiunge una riga allo storico -->
+                <form method="POST" class="mb-4 flex gap-2 items-end">
+                    <input type="hidden" name="csrf" value="<?= e($csrf) ?>" />
+                    <label class="block flex-1"><span class="text-gray-400 text-xs">Nota evento (telefonata, accordo, promemoria…)</span>
+                        <input name="event_note" placeholder="Es. Chiamato, richiamare lunedì" class="w-full p-2 rounded text-black mt-1 text-sm" />
+                    </label>
+                    <button name="action" value="add_note" class="bg-yellow-400 text-black px-3 py-2 rounded text-sm font-semibold hover:bg-yellow-300 whitespace-nowrap">+ Aggiungi</button>
+                </form>
+
+                <div class="text-xs text-gray-400 space-y-1 border-t border-gray-800 pt-3">
+                    <?php foreach ($history as $h): ?>
+                        <div>• <?= e(substr($h['changed_at'], 0, 16)) ?>
+                            <?php if ($h['old_status'] !== $h['new_status']): ?>
+                                — <?= e($statuses[$h['old_status']] ?? $h['old_status']) ?> → <?= e($statuses[$h['new_status']] ?? $h['new_status']) ?>
+                            <?php endif; ?>
+                            <?= $h['note'] ? '<span class="text-gray-200">' . e($h['note']) . '</span>' : '' ?>
+                            <span class="text-gray-600"><?= e($h['changed_by']) ?></span>
+                        </div>
+                    <?php endforeach; ?>
+                    <?php if (!$history): ?><div class="text-gray-600">Ancora nessun evento.</div><?php endif; ?>
+                </div>
             </div>
         </section>
 
+        <!-- ===== DESTRA: form preventivo + dati cliente collassabili ===== -->
         <section>
-            <form method="POST" class="space-y-4 text-sm bg-gray-900 p-4 rounded-xl">
+            <form method="POST" class="space-y-4 text-sm">
                 <input type="hidden" name="csrf" value="<?= e($csrf) ?>" />
-                <h2 class="font-semibold text-gray-300">Dettagli e dati</h2>
-                <?php if ($d['status'] === 'nuovo'): ?>
-                    <p class="text-xs text-gray-400">Imposta il prezzo e premi «Salva e invia preventivo» per mandare l'offerta al cliente.</p>
-                <?php endif; ?>
-                <?php inp('quoted_price', 'Prezzo preventivo (' . $d['currency'] . ')', $d['quoted_price']); ?>
-                <?php inp('tracking_number', 'Tracking spedizione', $d['tracking_number']); ?>
-                <label class="block"><span class="text-gray-400 text-xs">Note interne</span>
-                    <textarea name="admin_notes" rows="3" class="w-full p-2 rounded text-black mt-1 text-sm"><?= e($d['admin_notes']) ?></textarea>
-                </label>
 
-                <h2 class="font-semibold text-gray-300 pt-2">Dati di fatturazione</h2>
-                <?php if ($d['vat_valid'] !== null): ?>
-                    <p class="text-xs <?= $d['vat_valid'] ? 'text-green-400' : 'text-red-400' ?>">
-                        VIES: <?= $d['vat_valid'] ? 'P.IVA valida' : 'P.IVA non valida' ?>
-                        <?= $d['vat_vies_name'] ? '— ' . e($d['vat_vies_name']) : '' ?>
-                        <?= $d['vat_checked_at'] ? '<span class="text-gray-500">(' . e(substr($d['vat_checked_at'], 0, 16)) . ')</span>' : '' ?>
-                    </p>
-                <?php endif; ?>
-                <label class="block"><span class="text-gray-400 text-xs">Tipo cliente</span>
-                    <select name="customer_type" class="w-full p-2 rounded text-black mt-1">
-                        <option value="">—</option>
-                        <option value="privato" <?= $d['customer_type'] === 'privato' ? 'selected' : '' ?>>Privato</option>
-                        <option value="azienda" <?= $d['customer_type'] === 'azienda' ? 'selected' : '' ?>>Azienda</option>
-                    </select>
-                </label>
-                <div class="grid grid-cols-2 gap-3">
-                    <?php
-                    inp('company_name', 'Ragione sociale', $d['company_name']);
-                    inp('vat_number', 'P.IVA / VAT', $d['vat_number']);
-                    inp('tax_code', 'Codice fiscale', $d['tax_code']);
-                    inp('sdi_code', 'SDI', $d['sdi_code']);
-                    inp('pec', 'PEC', $d['pec']);
-                    inp('eori', 'EORI', $d['eori']);
-                    ?>
-                </div>
-                <?php inp('bill_address', 'Indirizzo fatturazione', $d['bill_address']); ?>
-                <div class="grid grid-cols-2 gap-3">
-                    <?php
-                    inp('bill_city', 'Città', $d['bill_city']);
-                    inp('bill_zip', 'CAP', $d['bill_zip']);
-                    inp('bill_province', 'Provincia/Stato', $d['bill_province']);
-                    inp('bill_country', 'Paese', $d['bill_country']);
-                    ?>
-                </div>
-                <label class="flex items-center gap-2 text-xs text-gray-400">
-                    <input type="checkbox" name="ship_same" value="1" <?= $d['ship_same'] ? 'checked' : '' ?> /> Spedizione = fatturazione
-                </label>
-                <?php inp('ship_address', 'Indirizzo spedizione (se diverso)', $d['ship_address']); ?>
-                <div class="grid grid-cols-2 gap-3">
-                    <?php
-                    inp('ship_city', 'Città', $d['ship_city']);
-                    inp('ship_zip', 'CAP', $d['ship_zip']);
-                    inp('ship_province', 'Provincia/Stato', $d['ship_province']);
-                    inp('ship_country', 'Paese', $d['ship_country']);
-                    ?>
+                <div class="bg-gray-900 p-4 rounded-xl space-y-4">
+                    <h2 class="font-semibold text-gray-300">Preventivo &amp; note interne</h2>
+                    <?php if ($d['status'] === 'nuovo'): ?>
+                        <p class="text-xs text-gray-400">Imposta il prezzo e premi «Salva e invia preventivo» per mandare l'offerta al cliente.</p>
+                    <?php endif; ?>
+                    <?php inp('quoted_price', 'Prezzo preventivo (' . $d['currency'] . ')', $d['quoted_price']); ?>
+                    <?php inp('tracking_number', 'Tracking spedizione', $d['tracking_number']); ?>
+                    <label class="block"><span class="text-gray-400 text-xs">Note interne</span>
+                        <textarea name="admin_notes" rows="3" class="w-full p-2 rounded text-black mt-1 text-sm"><?= e($d['admin_notes']) ?></textarea>
+                    </label>
                 </div>
 
-                <button name="action" value="check_vies" class="w-full bg-gray-700 text-white py-2 rounded text-xs hover:bg-gray-600">Verifica P.IVA su VIES</button>
+                <details class="bg-gray-900 rounded-xl" <?= $hasBilling ? 'open' : '' ?>>
+                    <summary class="cursor-pointer select-none font-semibold text-gray-300 px-4 py-3">Dati di fatturazione</summary>
+                    <div class="px-4 pb-4 space-y-3">
+                        <?php if ($d['vat_valid'] !== null): ?>
+                            <p class="text-xs <?= $d['vat_valid'] ? 'text-green-400' : 'text-red-400' ?>">
+                                VIES: <?= $d['vat_valid'] ? 'P.IVA valida' : 'P.IVA non valida' ?>
+                                <?= $d['vat_vies_name'] ? '— ' . e($d['vat_vies_name']) : '' ?>
+                                <?= $d['vat_checked_at'] ? '<span class="text-gray-500">(' . e(substr($d['vat_checked_at'], 0, 16)) . ')</span>' : '' ?>
+                            </p>
+                        <?php endif; ?>
+                        <label class="block"><span class="text-gray-400 text-xs">Tipo cliente</span>
+                            <select name="customer_type" class="w-full p-2 rounded text-black mt-1">
+                                <option value="">—</option>
+                                <option value="privato" <?= $d['customer_type'] === 'privato' ? 'selected' : '' ?>>Privato</option>
+                                <option value="azienda" <?= $d['customer_type'] === 'azienda' ? 'selected' : '' ?>>Azienda</option>
+                            </select>
+                        </label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <?php
+                            inp('company_name', 'Ragione sociale', $d['company_name']);
+                            inp('vat_number', 'P.IVA / VAT', $d['vat_number']);
+                            inp('tax_code', 'Codice fiscale', $d['tax_code']);
+                            inp('sdi_code', 'SDI', $d['sdi_code']);
+                            inp('pec', 'PEC', $d['pec']);
+                            inp('eori', 'EORI', $d['eori']);
+                            ?>
+                        </div>
+                        <?php inp('bill_address', 'Indirizzo fatturazione', $d['bill_address']); ?>
+                        <div class="grid grid-cols-2 gap-3">
+                            <?php
+                            inp('bill_city', 'Città', $d['bill_city']);
+                            inp('bill_zip', 'CAP', $d['bill_zip']);
+                            inp('bill_province', 'Provincia/Stato', $d['bill_province']);
+                            inp('bill_country', 'Paese', $d['bill_country']);
+                            ?>
+                        </div>
+                        <button name="action" value="check_vies" class="w-full bg-gray-700 text-white py-2 rounded text-xs hover:bg-gray-600">Verifica P.IVA su VIES</button>
+                    </div>
+                </details>
 
-                <div class="flex gap-3 pt-1">
+                <details class="bg-gray-900 rounded-xl" <?= (!$d['ship_same'] && $d['ship_address']) ? 'open' : '' ?>>
+                    <summary class="cursor-pointer select-none font-semibold text-gray-300 px-4 py-3">Indirizzo di spedizione</summary>
+                    <div class="px-4 pb-4 space-y-3">
+                        <label class="flex items-center gap-2 text-xs text-gray-400">
+                            <input type="checkbox" name="ship_same" value="1" <?= $d['ship_same'] ? 'checked' : '' ?> /> Spedizione = fatturazione
+                        </label>
+                        <?php inp('ship_address', 'Indirizzo spedizione (se diverso)', $d['ship_address']); ?>
+                        <div class="grid grid-cols-2 gap-3">
+                            <?php
+                            inp('ship_city', 'Città', $d['ship_city']);
+                            inp('ship_zip', 'CAP', $d['ship_zip']);
+                            inp('ship_province', 'Provincia/Stato', $d['ship_province']);
+                            inp('ship_country', 'Paese', $d['ship_country']);
+                            ?>
+                        </div>
+                    </div>
+                </details>
+
+                <div class="flex gap-3">
                     <button name="action" value="save" class="flex-1 bg-gray-200 text-black py-2 rounded font-semibold hover:bg-white">Salva dati</button>
                     <button name="action" value="send_quote" class="flex-1 bg-yellow-400 text-black py-2 rounded font-semibold hover:bg-yellow-300">Salva e invia preventivo</button>
                 </div>
             </form>
-
-            <h2 class="font-semibold mt-6 mb-2 text-gray-300">Storico</h2>
-            <div class="text-xs text-gray-400 space-y-1">
-                <?php foreach ($history as $h): ?>
-                    <div>• <?= e(substr($h['changed_at'], 0, 16)) ?> — <?= e($statuses[$h['old_status']] ?? $h['old_status']) ?> → <?= e($statuses[$h['new_status']] ?? $h['new_status']) ?><?= $h['note'] ? ' (' . e($h['note']) . ')' : '' ?> <span class="text-gray-600"><?= e($h['changed_by']) ?></span></div>
-                <?php endforeach; ?>
-                <?php if (!$history): ?><div class="text-gray-600">Nessun cambio di stato.</div><?php endif; ?>
-            </div>
         </section>
     </div>
 </body>

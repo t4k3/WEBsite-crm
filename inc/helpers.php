@@ -1,6 +1,24 @@
 <?php
 // Helper condivisi: sessione, CSRF, validazione, output.
 
+// === Versione applicazione (CRM + sito) =====================================
+// Bumpa APP_VERSION a OGNI modifica: nell'header del CRM vedi questo numero,
+// così sai se sul server è online davvero l'ultima versione.
+//   v1.3 (2026-06-30) — Trattativa creabile a mano (admin/new.php). Scheda: storico
+//                       a sinistra con "nota evento", dati cliente collassabili.
+//   v1.2 (2026-06-30) — Invio email via SMTP autenticato (config/smtp.php).
+//                       Deliverability affidabile; fallback a mail() se non configurato.
+//   v1.1 (2026-06-30) — Flusso preventivo → "compila dati" → conferma ordine.
+//                       Email: mittente info@takeoff.pro + envelope sender.
+//                       Versione visibile nell'header del CRM.
+//   v1.0              — CRM base: lead, preventivi, pagamento/spedizione, VIES.
+if (!defined('APP_VERSION')) {
+    define('APP_VERSION', 'v1.3');
+}
+// ===========================================================================
+
+require_once __DIR__ . '/mailer.php';
+
 function h_session(): void {
     if (session_status() !== PHP_SESSION_ACTIVE) {
         session_set_cookie_params([

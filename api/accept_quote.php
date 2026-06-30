@@ -23,6 +23,6 @@ try {
 }
 
 $cfg = require __DIR__ . '/../inc/product.php';
-@mail($cfg['notify_to'], 'Preventivo ACCETTATO — Wazlley', "Il cliente ha accettato il preventivo.\nDeal #{$deal['id']}\n", "From: noreply@takeoff.pro\r\n");
+send_mail($cfg['notify_to'], 'Preventivo ACCETTATO — Wazlley', "Il cliente ha accettato il preventivo.\nDeal #{$deal['id']}\n");
 
 json_out(['ok' => true]);

@@ -47,12 +47,12 @@ try {
     json_out(['ok' => false, 'error' => 'db'], 500);
 }
 
-@mail(
+send_mail(
     $cfg['notify_to'],
     'Nuova richiesta preventivo — Wazlley',
     "Nome: $name\nEmail: $email\nTelefono: " . post('phone') . "\nPaese: " . post('country')
         . "\nQuantita: $qty\nVariante: " . post('variant') . "\nNote:\n" . post('notes') . "\n",
-    "From: noreply@takeoff.pro\r\nReply-To: $email\r\n"
+    $email
 );
 
 json_out(['ok' => true, 'token' => $token]);

@@ -1,139 +1,124 @@
-// ================= COACHES DATA (multi-language) =================
-const coaches = {
-  it: [
-    {
-      name: "Nicola Negro",
-      quote: "“Caralho se funziona!”",
-      img: "/assets/img/coaches/coach_01.webp"
+// ================= COACHES DATA =================
+// Un oggetto per coach: nome, foto e frase in tutte le lingue.
+// L'ordine di questo array = ordine nel carosello (solo gli attivi).
+// Per sospendere un coach: aggiungi `active: false,`.
+const coaches = [
+  {
+    name: "Vincenzo Mallia",
+    img: "/assets/img/coaches/coach_02.webp",
+    quote: {
+      it: "Trasforma ogni allenamento in un'opportunità: servizi perfetti, ripetibili e alla massima intensità.",
+      en: "It turns every training session into an opportunity: perfect, repeatable serves at maximum intensity.",
     },
-    {
-      name: "Vincenzo Mallia",
-      quote: "“Minchia, si mi fa travagghiari di menu!”",
-      img: "/assets/img/coaches/coach_02.webp"
+  },
+  {
+    name: "Giovanni Guidetti",
+    img: "/assets/img/coaches/coach_14.webp",
+    quote: {
+      it: "La ricezione è un fondamentale difficile: serve talento, ma anche tanto, tanto lavoro. Con la Volleyball Machine uniamo qualità e quantità.",
+      en: "Reception is a difficult skill: it takes talent, but also a lot — a lot — of work. With the Volleyball Machine we combine quality and quantity.",
     },
-    {
-      name: "Marcello Abbondanza",
-      quote: "“Io già non battevo prima ma almeno adesso non massacro gli sparring.”",
-      img: "/assets/img/coaches/coach_03.webp"
+  },
+  {
+    name: "Daniele Santarelli",
+    img: "/assets/img/coaches/coach_07.webp",
+    quote: {
+      it: "Float e spin sembrano veri.",
+      en: "Float and spin feel real.",
     },
-    {
-      name: "Alessandro Chiappini",
-      quote: "“Non so se 300 ricezioni a testa sono sufficienti, ma sì, facciamone 500.”",
-      img: "/assets/img/coaches/coach_04.webp"
+  },
+  {
+    name: "Nicola Negro",
+    img: "/assets/img/coaches/coach_01.webp",
+    quote: {
+      it: "Sono molti anni che la uso: è diventata uno strumento essenziale, ci permette di ottimizzare tempi e lavoro.",
+      en: "I've been using it for many years: it has become an essential tool, helping us optimise time and effort.",
     },
-    {
-      name: "Marco Sinibaldi",
-      quote: "“Non subiamo più la battuta Spin.”",
-      img: "/assets/img/coaches/coach_05.webp"
+  },
+  {
+    name: "Gianni Caprara",
+    img: "/assets/img/coaches/coach_06.webp",
+    quote: {
+      it: "Uno strumento utile per gli allenatori di ogni livello, dai professionisti a chi insegna all'Under 13, per consolidare e facilitare l'apprendimento delle tecniche di ricezione e difesa in particolare.",
+      en: "A useful tool for coaches at every level, from professionals to those teaching the Under-13s, especially to build and ease the learning of receiving and defensive techniques.",
     },
-    {
-      name: "Gianni Caprara",
-      quote: "“Abbiamo ridotto i tempi di allenamento senza perdere qualità.”",
-      img: "/assets/img/coaches/coach_06.webp"
+  },
+  {
+    name: "Alessandro Chiappini",
+    img: "/assets/img/coaches/coach_04.webp",
+    quote: {
+      it: "L'utilizzo della sparapalloni in allenamento ci permette di mantenere un ritmo di lavoro molto elevato grazie alla sua precisione e continuità. La possibilità di effettuare un alto numero di ripetizioni, lavorando su zone specifiche del campo e sulla lateralità, rappresenta un grande valore per lo sviluppo tecnico. Inoltre, la duttilità della macchina consente di allenare in modo efficace diversi fondamentali, adattandosi alle esigenze del lavoro quotidiano. Per noi è ormai diventata una parte integrante dell'allenamento giornaliero.",
+      en: "Using the ball machine in training lets us keep a very high work rate thanks to its precision and consistency. Being able to perform a high number of repetitions, working on specific areas of the court and on lateral movement, is a great asset for technical development. What's more, the machine's versatility makes it possible to train several fundamentals effectively, adapting to the needs of daily work. For us it has now become an integral part of everyday training.",
     },
-    {
-      name: "Daniele Santarelli",
-      quote: "“Le simulazioni di Float e Spin sono estremamente realistiche.”",
-      img: "/assets/img/coaches/coach_07.webp"
+  },
+  {
+    name: "Mic Halley",
+    img: "/assets/img/coaches/coach_11.webp",
+    quote: {
+      it: "Semplicemente magica.",
+      en: "Simply magic.",
     },
-    {
-      name: "Enrico Barbolini",
-      quote: "“Ogni parametro è sotto controllo, in tempo reale.”",
-      img: "/assets/img/coaches/coach_08.webp"
+  },
+  {
+    name: "Claudio Busato",
+    img: "/assets/img/coaches/coach_12.webp",
+    quote: {
+      it: "Un vero salto di qualità in allenamento.",
+      en: "A real step up in training.",
     },
-    {
-      name: "Angelo Lorenzetti",
-      quote: "“L’interfaccia è intuitiva, perfetta anche per chi non è tecnico.”",
-      img: "/assets/img/coaches/coach_09.webp"
+  },
+  {
+    name: "Marco Sinibaldi",
+    img: "/assets/img/coaches/coach_05.webp",
+    quote: {
+      it: "Trasferisce sicurezza ai giocatori e aiuta ad avere più controllo sulla palla. Semplicemente affidabile.",
+      en: "It gives players confidence and helps them control the ball better. Simply reliable.",
     },
-    {
-      name: "Zanin",
-      quote: "“Un prodotto che nasce da chi conosce davvero la pallavolo.”",
-      img: "/assets/img/coaches/coach_10.webp"
+  },
+  {
+    name: "Rossano Bertocco",
+    img: "/assets/img/coaches/coach_13.webp",
+    quote: {
+      it: "Studiata con i pro, ma di aiuto a tutti.",
+      en: "Designed with the pros, but helpful for everyone.",
     },
-    {
-      name: "Mic Halley",
-      quote: "“Magic.”",
-      img: "/assets/img/coaches/coach_11.webp"
-    },
-    {
-      name: "Claudio Busato",
-      quote: "“La tecnologia è la chiave del progresso sportivo.”",
-      img: "/assets/img/coaches/coach_12.webp"
-    },
-    {
-      name: "Dio",
-      quote: "“Tiro giù meno santi, da quando la usiamo.”",
-      img: "/assets/img/coaches/coach_13.webp"
-    }
-  ],
+  },
 
-  en: [
-    {
-      name: "Nicola Negro",
-      quote: "“Damn, it really works!”",
-      img: "/assets/img/coaches/coach_01.webp"
+  // ===== Sospesi (in attesa della frase reale) =====
+  {
+    name: "Marcello Abbondanza",
+    img: "/assets/img/coaches/coach_03.webp",
+    active: false,
+    quote: {
+      it: "Ora le battute le tira la macchina.",
+      en: "The machine handles the serves now.",
     },
-    {
-      name: "Vincenzo Mallia",
-      quote: "“It saves me a ton of work!”",
-      img: "/assets/img/coaches/coach_02.webp"
+  },
+  {
+    name: "Enrico Barbolini",
+    img: "/assets/img/coaches/coach_08.webp",
+    active: false,
+    quote: {
+      it: "Controllo tutto in tempo reale.",
+      en: "I control everything in real time.",
     },
-    {
-      name: "Marcello Abbondanza",
-      quote: "“I never served before, but at least now I don't destroy my sparring partners.”",
-      img: "/assets/img/coaches/coach_03.webp"
+  },
+  {
+    name: "Angelo Lorenzetti",
+    img: "/assets/img/coaches/coach_09.webp",
+    active: false,
+    quote: {
+      it: "Intuitiva, la usano tutti subito.",
+      en: "Intuitive — everyone picks it up right away.",
     },
-    {
-      name: "Alessandro Chiappini",
-      quote: "“Not sure if 300 receptions each are enough, let’s go for 500!”",
-      img: "/assets/img/coaches/coach_04.webp"
+  },
+  {
+    name: "Zanin",
+    img: "/assets/img/coaches/coach_10.webp",
+    active: false,
+    quote: {
+      it: "Si vede che la conosce chi gioca a volley.",
+      en: "You can tell it's made by volleyball people.",
     },
-    {
-      name: "Marco Sinibaldi",
-      quote: "“We no longer struggle against Spin serves.”",
-      img: "/assets/img/coaches/coach_05.webp"
-    },
-    {
-      name: "Gianni Caprara",
-      quote: "“We’ve cut training time without losing quality.”",
-      img: "/assets/img/coaches/coach_06.webp"
-    },
-    {
-      name: "Daniele Santarelli",
-      quote: "“Float and Spin simulations feel incredibly realistic.”",
-      img: "/assets/img/coaches/coach_07.webp"
-    },
-    {
-      name: "Enrico Barbolini",
-      quote: "“Every parameter is under control in real time.”",
-      img: "/assets/img/coaches/coach_08.webp"
-    },
-    {
-      name: "Angelo Lorenzetti",
-      quote: "“The interface is intuitive — even for non-technicians.”",
-      img: "/assets/img/coaches/coach_09.webp"
-    },
-    {
-      name: "Zanin",
-      quote: "“A product clearly designed by people who know volleyball.”",
-      img: "/assets/img/coaches/coach_10.webp"
-    },
-    {
-      name: "Mic Halley",
-      quote: "“Magic.”",
-      img: "/assets/img/coaches/coach_11.webp"
-    },
-    {
-      name: "Claudio Busato",
-      quote: "“Technology is the key to sports progress.”",
-      img: "/assets/img/coaches/coach_12.webp"
-    },
-    {
-      name: "God",
-      quote: "“I swear less since we started using it.”",
-      img: "/assets/img/coaches/coach_13.webp"
-    }
-  ]
-};
-
+  },
+];

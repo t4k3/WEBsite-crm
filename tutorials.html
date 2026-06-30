@@ -6,24 +6,19 @@
         <title data-i18n="tutorial_page_title">Tutorial – Takeoff.pro</title>
         <link rel="icon" href="/assets/img/favicon.ico" />
 
-        <!-- ✅ Tailwind -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
         <script src="https://cdn.tailwindcss.com"></script>
-
-        <!-- ✅ Font Fauna -->
         <style>
-            @font-face {
-                font-family: "Fauna";
-                src: url("/assets/fonts/fauna-thin.woff2") format("woff2");
-                font-weight: 300;
-                font-style: normal;
-                font-display: swap;
-            }
-
             body {
-                font-family:
-                    "Fauna", "Helvetica Neue", Helvetica, Arial, sans-serif;
-                background-color: black;
-                color: white;
+                font-family: "Inter", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+                background-color: #ffffff;
+                color: #15140f;
+            }
+            h1, h2, h3 {
+                font-family: "Archivo", "Inter", sans-serif;
+                letter-spacing: -0.01em;
             }
         </style>
     </head>
@@ -31,7 +26,7 @@
     <body>
         <!-- ================= NAVBAR ================= -->
         <nav
-            class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-black/70 backdrop-blur-md"
+            class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-white/85 border-b border-gray-200 text-gray-800 backdrop-blur-md"
         >
             <!-- LOGO -->
             <a href="index.html" class="flex items-center gap-2">
@@ -46,25 +41,25 @@
             <div class="flex gap-4 text-sm font-light">
                 <a
                     href="index.html#home"
-                    class="hover:text-yellow-400"
+                    class="hover:text-lime-600"
                     data-i18n="nav_home"
                     >Home</a
                 >
                 <a
                     href="contact.html"
-                    class="hover:text-yellow-400"
+                    class="hover:text-lime-600"
                     data-i18n="nav_contact"
                     >Contatti</a
                 >
                 <a
                     href="tutorials.html"
-                    class="hover:text-yellow-400 text-yellow-400 font-semibold"
+                    class="hover:text-lime-600 text-lime-600 font-semibold"
                     data-i18n="nav_tutorials"
                     >Tutorial</a
                 >
                 <a
                     href="privacy.html"
-                    class="hover:text-yellow-400"
+                    class="hover:text-lime-600"
                     data-i18n="nav_privacy"
                     >Privacy</a
                 >
@@ -98,69 +93,35 @@
                 Video Tutorial
             </h1>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- ⚠️ TODO: Sostituire VIDEO_ID_1, VIDEO_ID_2, VIDEO_ID_3 con gli ID reali dei video YouTube -->
-                <!-- Esempio: se il video è https://www.youtube.com/watch?v=dQw4w9WgXcQ, l'ID è dQw4w9WgXcQ -->
-
-                <div class="bg-gray-900 p-4 rounded-xl shadow-lg">
-                    <iframe
-                        class="w-full aspect-video rounded-lg"
-                        src="https://www.youtube.com/embed/VIDEO_ID_1"
-                        allowfullscreen
-                    ></iframe>
-                    <h2
-                        class="mt-3 font-semibold text-lg"
-                        data-i18n="tutorial_setup"
-                    >
-                        Montaggio e trasporto
-                    </h2>
-                </div>
-
-                <div class="bg-gray-900 p-4 rounded-xl shadow-lg">
-                    <iframe
-                        class="w-full aspect-video rounded-lg"
-                        src="https://www.youtube.com/embed/VIDEO_ID_2"
-                        allowfullscreen
-                    ></iframe>
-                    <h2
-                        class="mt-3 font-semibold text-lg"
-                        data-i18n="tutorial_display"
-                    >
-                        Configurazione display
-                    </h2>
-                </div>
-
-                <div class="bg-gray-900 p-4 rounded-xl shadow-lg">
-                    <iframe
-                        class="w-full aspect-video rounded-lg"
-                        src="https://www.youtube.com/embed/VIDEO_ID_3"
-                        allowfullscreen
-                    ></iframe>
-                    <h2
-                        class="mt-3 font-semibold text-lg"
-                        data-i18n="tutorial_bluetooth"
-                    >
-                        Connessione Bluetooth e App
-                    </h2>
-                </div>
+            <div
+                class="max-w-3xl mx-auto rounded-xl overflow-hidden border border-gray-200 shadow-lg bg-black"
+            >
+                <iframe
+                    class="w-full aspect-video"
+                    src="https://www.youtube.com/embed/BfFndaBmapA"
+                    title="Takeoff.pro Volleyball Machine"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                ></iframe>
             </div>
         </main>
 
         <!-- ================= FOOTER ================= -->
         <footer
-            class="bg-gray-950 text-center py-6 text-sm text-gray-400 mt-16"
+            class="bg-gray-50 border-t border-gray-200 text-center py-6 text-sm text-gray-500 mt-16"
         >
             <p data-i18n="footer_text">
                 © 2025 Wazlley by Takeoff.pro — sport innovation
             </p>
             <p>
-                <a href="mailto:info@takeoff.pro" class="text-yellow-400"
+                <a href="mailto:info@takeoff.pro" class="text-lime-600"
                     >info@takeoff.pro</a
                 >
             </p>
         </footer>
 
         <!-- ================= SCRIPT MULTILINGUA ================= -->
-        <script src="/assets/js/lang.js"></script>
+        <script src="/assets/js/lang.js?v=22"></script>
     </body>
 </html>

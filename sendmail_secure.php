@@ -62,14 +62,9 @@ $body .= "Messaggio:\n$message\n";
 $body .= "\nIP: " . $_SERVER['REMOTE_ADDR'] . "\n";
 $body .= "User-Agent: " . ($_SERVER['HTTP_USER_AGENT'] ?? 'N/A');
 
-// Header sicuri
-$headers  = "From: noreply@takeoff.pro\r\n";
-$headers .= "Reply-To: $email\r\n";
-$headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
-$headers .= "X-Mailer: PHP/" . phpversion();
-
 // ================== INVIO ==================
-if (@mail($to, $subject, $body, $headers)) {
+require __DIR__ . '/inc/mailer.php';
+if (send_mail($to, $subject, $body, $email)) {
     header("Location: $redirect_ok");
 } else {
     header("Location: $redirect_error");
