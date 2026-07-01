@@ -23,8 +23,8 @@ const coaches = [
     name: "Daniele Santarelli",
     img: "/assets/img/coaches/coach_07.webp",
     quote: {
-      it: "Float e spin sembrano veri.",
-      en: "Float and spin feel real.",
+      it: "Ho sempre considerato la sparapalloni uno strumento essenziale per la pallavolo, ma la maneggevolezza e la precisione di questa macchina hanno reso il nostro lavoro ancora più semplice.",
+      en: "I've always considered the ball machine an essential tool for volleyball, but the handling and precision of this one have made our work even easier.",
     },
   },
   {
