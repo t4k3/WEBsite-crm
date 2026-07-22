@@ -79,11 +79,11 @@ function f($d, $k) { return e($d[$k] ?? ''); }
     <link rel="icon" href="/assets/img/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: "Inter", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif; background:#ffffff; color:#15140f; }
-        h1, h2, h3 { font-family: "Archivo", "Inter", sans-serif; letter-spacing:-0.01em; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", Arial, sans-serif; background:#ffffff; color:#1d1d1f; }
+        h1, h2, h3 { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif; font-weight: 600; letter-spacing:-0.022em; }
         .field { width:100%; padding:.6rem; border-radius:.5rem; color:#000; background:#fff; border:1px solid #d1d5db; }
         .lbl { display:block; font-size:.75rem; color:#44443f; margin-bottom:.2rem; }
     </style>
@@ -103,7 +103,7 @@ function f($d, $k) { return e($d[$k] ?? ''); }
             <h1 class="text-2xl font-bold mb-3">Ordine confermato ✅</h1>
             <?php if ($viesMsg): ?><p class="<?= $viesClass ?> mb-2"><?= e($viesMsg) ?></p><?php endif; ?>
             <p class="text-gray-600">Grazie, abbiamo ricevuto la tua conferma e i dati di fatturazione. Ti contatteremo a breve per finalizzare la spedizione.</p>
-            <a href="<?= e('preventivo.php?token=' . $token) ?>" class="inline-block mt-6 text-lime-600 underline">Torna al preventivo</a>
+            <a href="<?= e('preventivo.php?token=' . $token) ?>" class="inline-block mt-6 text-[#0096e0] underline">Torna al preventivo</a>
         </div>
     <?php else: ?>
         <form method="POST" class="space-y-4 bg-gray-50 border border-gray-200 p-6 rounded-2xl">
@@ -148,7 +148,7 @@ function f($d, $k) { return e($d[$k] ?? ''); }
                 </div>
             </div>
 
-            <button type="submit" class="w-full bg-lime-400 text-black px-6 py-3 rounded font-semibold hover:bg-lime-300 transition">Conferma l'ordine</button>
+            <button type="submit" class="w-full bg-[#f59000] text-white px-6 py-3 rounded-full font-medium hover:bg-[#e08400] transition">Conferma l'ordine</button>
         </form>
         <script>
             document.getElementById('shipSame').addEventListener('change', function(){ document.getElementById('shipFields').classList.toggle('hidden', this.checked); });

@@ -80,16 +80,21 @@ function smtp_send(array $cfg, string $to, string $subject, string $body, ?strin
         return false;
     }
 
+    // Supporta più destinatari separati da virgola
+    $recipients = array_filter(array_map('trim', explode(',', $to)));
     if ($code($put('MAIL FROM:<' . $from . '>')) >= 400) { fclose($fp); return false; }
-    if ($code($put('RCPT TO:<' . $to . '>'))  >= 400) { fclose($fp); return false; }
+    foreach ($recipients as $rcpt) {
+        if ($code($put('RCPT TO:<' . $rcpt . '>')) >= 400) { fclose($fp); return false; }
+    }
     if ($code($put('DATA')) !== 354)                  { fclose($fp); return false; }
 
     $subjEnc = preg_match('/[\x80-\xFF]/', $subject)
         ? '=?UTF-8?B?' . base64_encode($subject) . '?='
         : $subject;
 
+    $toHeader = implode(', ', array_map(fn($r) => '<' . $r . '>', $recipients));
     $headers = "From: $fromName <$from>\r\n"
-        . "To: <$to>\r\n"
+        . "To: $toHeader\r\n"
         . "Subject: $subjEnc\r\n"
         . ($replyTo ? "Reply-To: <$replyTo>\r\n" : '')
         . 'Date: ' . date('r') . "\r\n"

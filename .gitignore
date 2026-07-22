@@ -90,3 +90,5 @@ cache/
 
 # Credenziali SMTP (mai in git)
 config/smtp.php
+
+deploy/.ssh_pass

@@ -115,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_check($_POST['csrf'] ?? null))
                 . " (q.tà {$deal['quantity']}, colore {$deal['variant']}).\n"
                 . "Prezzo: " . number_format((float)$price, 2, ',', '.') . " {$deal['currency']}\n\n"
                 . "Vedi il prezzo e completa l'ordine (inserendo i dati di fatturazione) qui:\n$link\n\nGrazie,\nTakeoff.pro";
-            send_mail($deal['email'], 'Il tuo preventivo Wazlley', $body, $cfg['notify_to']);
+            send_mail($deal['email'], 'Il tuo preventivo Wazlley', $body, 'info@takeoff.pro');
             header('Location: deal.php?id=' . $id . '&sent=1');
             exit;
         }

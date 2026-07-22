@@ -52,7 +52,7 @@ const coaches = [
     },
   },
   {
-    name: "Mic Halley",
+    name: "Mick Haley",
     img: "/assets/img/coaches/coach_11.webp",
     quote: {
       it: "Semplicemente magica.",
@@ -90,6 +90,15 @@ const coaches = [
     quote: {
       it: "La uso in momenti analitici, concentrati in brevi periodi mirati: lì alza intensità e precisione del lavoro e fa davvero la differenza.",
       en: "I use it in focused, analytical moments, concentrated into short targeted bursts: that's where it raises the intensity and precision of the work and really makes the difference.",
+    },
+  },
+
+  {
+    name: "Alessandra Campedelli",
+    img: "/assets/img/coaches/coach_15.webp",
+    quote: {
+      it: "Nei contesti in cui ho lavorato — Iran, Pakistan, Tunisia — i settori femminili sono spesso i meno valorizzati, con staff tecnici ridotti all'essenziale. La macchina spara-palloni Takeoff.pro è stata per me uno strumento prezioso: mi ha permesso di sopperire alle mancanze di uno staff completo, garantendo comunque qualità e continuità negli allenamenti.",
+      en: "In the contexts where I've worked — Iran, Pakistan, Tunisia — women's programs are often the least valued, with technical staff cut to the bare minimum. The Takeoff.pro ball machine has been a precious tool for me: it let me make up for the lack of a full staff, still ensuring quality and continuity in training.",
     },
   },
 

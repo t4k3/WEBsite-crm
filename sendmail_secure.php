@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // ================== CONFIG ==================
 $to = 'info@takeoff.pro';
-$subject = 'Richiesta Preventivo Ballgun Pro 2025';
+$subject = 'Richiesta Preventivo Takeoff.pro Volleyball Machine';
 $redirect_ok = 'thankyou.html';
 $redirect_error = 'contact.html';
 

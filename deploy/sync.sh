@@ -42,6 +42,7 @@ EXCLUDES=(
 run_lftp () {
   lftp -u "$FTP_USER,$FTP_PASS" "ftp://$FTP_HOST" <<EOF
 set ftp:ssl-allow no
+set ftp:passive-mode on
 set net:max-retries 2
 set net:timeout 15
 $1

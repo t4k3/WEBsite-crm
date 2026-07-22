@@ -11,21 +11,18 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderSections(lang) {
     container.innerHTML = "";
     wazlleySections.forEach((section) => {
-      const layout =
-        section.side === "right" ? "md:flex-row-reverse" : "md:flex-row";
       const text = section[lang] || section.it; // fallback in italiano
 
+      // Stile "pagina prodotto Apple": titolo grande centrato + testo + immagine sotto
       const block = document.createElement("section");
-      block.className = `py-14 flex flex-col ${layout} items-center justify-center gap-8 px-6`;
+      block.className = "py-16 md:py-24 px-6 text-center";
       block.innerHTML = `
+        <h2 class="text-3xl md:text-5xl font-semibold tracking-tight max-w-3xl mx-auto">${text.title}</h2>
+        <p class="mt-4 text-lg md:text-xl text-[#6e6e73] max-w-2xl mx-auto">${text.text}</p>
         <img src="${section.img}" alt="${text.title}"
-             class="h-[46vh] w-auto max-w-full object-contain rounded-2xl bg-[#333333] p-2 drop-shadow-xl"
+             class="mx-auto mt-10 max-h-[54vh] w-auto object-contain rounded-3xl bg-[#333333] p-3"
              loading="lazy"
              onerror="this.src='/assets/img/placeholder.svg'">
-        <div class="text-center md:text-left max-w-lg">
-          <h2 class="text-2xl md:text-2xl font-bold mb-4">${text.title}</h2>
-          <p class="text-lg text-gray-600">${text.text}</p>
-        </div>
       `;
       container.appendChild(block);
     });

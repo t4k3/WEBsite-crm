@@ -83,7 +83,7 @@ function renderCarousel(lang) {
            class="coach-photo ${imgCls} mx-auto mb-3 object-cover opacity-0 transition-opacity duration-500" />
       <h3 class="text-lg font-semibold mb-1">${coach.name}</h3>
       <p class="text-gray-600 italic text-sm line-clamp-3">“${quote}”</p>
-      <span class="block mt-2 text-xs text-lime-600 font-medium">${more}</span>
+      <span class="block mt-2 text-xs text-[#0096e0] font-medium">${more}</span>
     </div>
   `;
     })

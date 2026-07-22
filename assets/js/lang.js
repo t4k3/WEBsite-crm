@@ -13,6 +13,7 @@ const translations = {
     title: "Takeoff.pro Volleyball Machine",
     subtitle: "sport innovation",
     cta: "Richiedi un preventivo",
+    hero_watch: "Guarda in azione ›",
 
     // SEZIONI (features)
     speed: "Velocità massima 115 km/h",
@@ -35,6 +36,11 @@ const translations = {
     video_title: "Guarda in azione",
     specs_title: "Caratteristiche e specifiche",
 
+    // REEL INSTAGRAM
+    reels_title: "Dal nostro Instagram",
+    reels_sub: "Allenamenti, test e novità dal campo.",
+    reels_follow: "Seguici su Instagram ›",
+
     // COACH / CAROUSEL
     coach_title: "Cosa dicono gli allenatori",
 
@@ -56,9 +62,9 @@ const translations = {
     form_quantity: "Quantità",
     form_message: "Note aggiuntive",
     privacy_consent:
-      'Acconsento al trattamento dei dati secondo la <a href="privacy.html" class="text-lime-600 underline hover:text-lime-700">Privacy Policy</a>.',
+      'Acconsento al trattamento dei dati secondo la <a href="privacy.html" class="text-[#0096e0] underline hover:text-[#0077b3]">Privacy Policy</a>.',
     contact_alt:
-      'Oppure scrivi a <a href="mailto:info@takeoff.pro" class="text-lime-600">info@takeoff.pro</a>',
+      'Oppure scrivi a <a href="mailto:info@takeoff.pro" class="text-[#0096e0]">info@takeoff.pro</a>',
 
     // PRIVACY PAGE
     privacy_title: "Privacy Policy – Takeoff.pro",
@@ -87,6 +93,7 @@ const translations = {
     title: "Takeoff.pro Volleyball Machine",
     subtitle: "sport innovation",
     cta: "Request a quote",
+    hero_watch: "See it in action ›",
 
     // SECTIONS (features)
     speed: "Top speed 115 km/h",
@@ -109,6 +116,11 @@ const translations = {
     video_title: "See it in action",
     specs_title: "Features & specs",
 
+    // INSTAGRAM REELS
+    reels_title: "From our Instagram",
+    reels_sub: "Training, testing and news from the court.",
+    reels_follow: "Follow us on Instagram ›",
+
     // COACH / CAROUSEL
     coach_title: "What coaches say",
 
@@ -130,9 +142,9 @@ const translations = {
     form_quantity: "Quantity",
     form_message: "Additional notes",
     privacy_consent:
-      'I consent to data processing according to the <a href="privacy.html" class="text-lime-600 underline hover:text-lime-700">Privacy Policy</a>.',
+      'I consent to data processing according to the <a href="privacy.html" class="text-[#0096e0] underline hover:text-[#0077b3]">Privacy Policy</a>.',
     contact_alt:
-      'Or write to <a href="mailto:info@takeoff.pro" class="text-lime-600">info@takeoff.pro</a>',
+      'Or write to <a href="mailto:info@takeoff.pro" class="text-[#0096e0]">info@takeoff.pro</a>',
 
     // PRIVACY PAGE
     privacy_title: "Privacy Policy – Takeoff.pro",

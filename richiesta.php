@@ -12,11 +12,11 @@ $csrf = csrf_token();
     <link rel="icon" href="/assets/img/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: "Inter", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif; background:#ffffff; color:#15140f; }
-        h1, h2, h3 { font-family: "Archivo", "Inter", sans-serif; letter-spacing:-0.01em; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", Arial, sans-serif; background:#ffffff; color:#1d1d1f; }
+        h1, h2, h3 { font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif; font-weight: 600; letter-spacing:-0.022em; }
         .field { width:100%; padding:.65rem; border-radius:.5rem; color:#000; background:#fff; border:1px solid #d1d5db; }
         .lbl { display:block; font-size:.8rem; color:#44443f; margin-bottom:.25rem; }
         .err { color:#dc2626; font-size:.75rem; margin-top:.2rem; min-height:1rem; }
@@ -25,7 +25,7 @@ $csrf = csrf_token();
 <body>
     <nav class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-white/85 border-b border-gray-200 text-gray-800 backdrop-blur-md">
         <a href="index.html" class="flex items-center gap-2"><img src="/assets/img/logo.png" alt="Wazlley" class="h-10" /></a>
-        <a href="index.html" class="text-sm hover:text-lime-600">← Home</a>
+        <a href="index.html" class="text-sm hover:text-[#0096e0]">← Home</a>
     </nav>
 
     <main class="pt-28 pb-20 px-4 max-w-2xl mx-auto">
@@ -33,7 +33,7 @@ $csrf = csrf_token();
             <h1 class="text-2xl font-bold mb-1">Richiedi un preventivo</h1>
             <p class="text-gray-500 text-sm mb-4">
                 <?= e($cfg['name']) ?> — a partire da
-                <span class="text-lime-600 font-semibold"><?= number_format((float)$cfg['price_from'], 0, ',', '.') ?> <?= e($cfg['currency']) ?></span> a unità.
+                <span class="text-[#0096e0] font-semibold"><?= number_format((float)$cfg['price_from'], 0, ',', '.') ?> <?= e($cfg['currency']) ?></span> a unità.
                 Ti invieremo un preventivo personalizzato.
             </p>
 
@@ -93,11 +93,11 @@ $csrf = csrf_token();
             <label class="flex items-start gap-2 text-sm text-gray-600">
                 <input type="checkbox" name="consent" value="1" class="mt-1" required />
                 <span>Acconsento al trattamento dei dati secondo la
-                    <a href="privacy.html" class="text-lime-600 underline">Privacy Policy</a>.</span>
+                    <a href="privacy.html" class="text-[#0096e0] underline">Privacy Policy</a>.</span>
             </label>
             <div class="err" data-err="consent"></div>
 
-            <button type="submit" class="w-full bg-lime-400 text-black px-6 py-3 rounded font-semibold hover:bg-lime-300 transition">
+            <button type="submit" class="w-full bg-[#f59000] text-white px-6 py-3 rounded-full font-medium hover:bg-[#e08400] transition">
                 Invia richiesta
             </button>
         </form>
@@ -105,7 +105,7 @@ $csrf = csrf_token();
         <div id="done" class="hidden bg-gray-50 border border-gray-200 p-8 rounded-2xl text-center">
             <h1 class="text-2xl font-bold mb-3">Grazie! ✅</h1>
             <p class="text-gray-600">Abbiamo ricevuto la tua richiesta. Ti invieremo al più presto un preventivo personalizzato<span id="callNote"></span>.</p>
-            <a href="index.html" class="inline-block mt-6 px-6 py-3 bg-lime-400 text-black rounded font-semibold">Torna alla Home</a>
+            <a href="index.html" class="inline-block mt-6 px-6 py-3 bg-[#f59000] text-white rounded-full font-medium">Torna alla Home</a>
         </div>
     </main>
 
