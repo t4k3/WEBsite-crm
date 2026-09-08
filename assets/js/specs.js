@@ -6,9 +6,6 @@
 const specsData = [
   { it: ["Velocità di lancio", "fino a 115 km/h"], en: ["Launch speed", "up to 115 km/h"], fr: ["Vitesse de lancement", "jusqu’à 115 km/h"] },
   { it: ["Altezza totale", "220–280 cm"],          en: ["Overall height", "220–280 cm"], fr: ["Hauteur totale", "220–280 cm"] },
-  { it: ["Altezza dello stativo", "110 cm"],       en: ["Stand height", "110 cm"], fr: ["Hauteur du trépied", "110 cm"] },
-  { it: ["Profondità macchina", "120 cm"],         en: ["Machine depth", "120 cm"], fr: ["Profondeur machine", "120 cm"] },
-  { it: ["Base (ingombro)", "90 cm"],              en: ["Base (footprint)", "90 cm"], fr: ["Base (encombrement)", "90 cm"] },
   { it: ["Inclinazione testa", "regolabile"],      en: ["Head tilt", "adjustable"], fr: ["Inclinaison de la tête", "réglable"] },
   { it: ["Controllo", "Bluetooth (app remota)"],   en: ["Control", "Bluetooth (remote app)"], fr: ["Commande", "Bluetooth (application à distance)"] },
   { it: ["Alimentazione", "a batteria, portatile"], en: ["Power", "battery, portable"], fr: ["Alimentation", "sur batterie, portable"] },
