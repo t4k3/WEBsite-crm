@@ -4,6 +4,24 @@
 // === Versione applicazione (CRM + sito) =====================================
 // Bumpa APP_VERSION a OGNI modifica: nell'header del CRM vedi questo numero,
 // così sai se sul server è online davvero l'ultima versione.
+//   v1.9 (2026-08-10) — Magazzino: tabella riepilogativa "Vendute" (data, modello,
+//                       colore, tipo, cliente cliccabile, prezzo).
+//   v1.8 (2026-07-28) — Fix magazzino: i pulsanti dei lotti vanno a capo (Salva non
+//                       più tagliato fuori); rifornire un lotto esaurito lo rimette
+//                       automaticamente disponibile.
+//   v1.7 (2026-07-28) — Magazzino nuove "a lotto": In trattativa/Venduta generano
+//                       una riga per il singolo pezzo e scalano il disponibile;
+//                       "↩ Lotto" rimette il pezzo tra i disponibili. Usate: diretto.
+//   v1.6 (2026-07-28) — Magazzino ↔ trattative: ogni macchina collegabile a un
+//                       cliente; pulsante "Venduta" (−1, storico, 0 → non
+//                       disponibile). Nella scheda trattativa: macchine collegate
+//                       e acquistate.
+//   v1.5 (2026-07-28) — Nuovo stato trattativa "Fwd to partner": clienti esteri
+//                       da girare ai rivenditori locali per vincoli contrattuali.
+//   v1.4 (2026-07-28) — Magazzino (admin/inventory.php): spara palloni nuove e usate,
+//                       righe SKU (modello+colore), quantità con storico movimenti,
+//                       totale disponibili in dashboard. Auto-scalo alla conferma
+//                       ordine: step successivo.
 //   v1.3 (2026-06-30) — Trattativa creabile a mano (admin/new.php). Scheda: storico
 //                       a sinistra con "nota evento", dati cliente collassabili.
 //   v1.2 (2026-06-30) — Invio email via SMTP autenticato (config/smtp.php).
@@ -13,7 +31,7 @@
 //                       Versione visibile nell'header del CRM.
 //   v1.0              — CRM base: lead, preventivi, pagamento/spedizione, VIES.
 if (!defined('APP_VERSION')) {
-    define('APP_VERSION', 'v1.3');
+    define('APP_VERSION', 'v1.9');
 }
 // ===========================================================================
 
@@ -117,6 +135,7 @@ function crm_statuses(): array {
         'preventivo_inviato' => 'Preventivo inviato',
         'in_trattativa'      => 'In trattativa',
         'ordine_confermato'  => 'Ordine confermato',
+        'fwd_partner'        => 'Fwd to partner',   // cliente estero girato al rivenditore locale
         'perso'              => 'Perso',
     ];
 }

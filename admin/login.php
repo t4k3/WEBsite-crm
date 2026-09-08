@@ -32,15 +32,16 @@ $csrf = csrf_token();
 <!doctype html>
 <html lang="it">
 <head>
+    <meta name="robots" content="noindex, nofollow" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><?= $firstRun ? 'Crea accesso admin' : 'Login' ?> — Wazlley CRM</title>
+    <title><?= $firstRun ? 'Crea accesso admin' : 'Login' ?> — V12 CRM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>body{background:#0b0f19;color:#fff;font-family:system-ui,Arial,sans-serif}</style>
 </head>
 <body class="min-h-screen flex items-center justify-center px-4">
     <form method="POST" class="w-full max-w-sm bg-gray-900 p-8 rounded-2xl space-y-4">
-        <h1 class="text-xl font-bold"><?= $firstRun ? 'Crea il primo accesso admin' : 'Wazlley CRM — Login' ?>
+        <h1 class="text-xl font-bold"><?= $firstRun ? 'Crea il primo accesso admin' : 'V12 CRM — Login' ?>
             <span class="ml-1 text-xs font-mono text-yellow-300/80 align-middle"><?= e(APP_VERSION) ?></span>
         </h1>
         <?php if ($firstRun): ?>

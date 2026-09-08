@@ -1,5 +1,6 @@
 <?php
 require __DIR__ . '/../inc/auth.php';
+require __DIR__ . '/../inc/inventory.php';
 require_login();
 
 $statuses = crm_statuses();
@@ -115,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && csrf_check($_POST['csrf'] ?? null))
                 . " (q.tà {$deal['quantity']}, colore {$deal['variant']}).\n"
                 . "Prezzo: " . number_format((float)$price, 2, ',', '.') . " {$deal['currency']}\n\n"
                 . "Vedi il prezzo e completa l'ordine (inserendo i dati di fatturazione) qui:\n$link\n\nGrazie,\nTakeoff.pro";
-            send_mail($deal['email'], 'Il tuo preventivo Wazlley', $body, 'info@takeoff.pro');
+            send_mail($deal['email'], 'Il tuo preventivo V12', $body, 'info@takeoff.pro');
             header('Location: deal.php?id=' . $id . '&sent=1');
             exit;
         }
@@ -151,9 +152,10 @@ function inp($name, $label, $val, $w = '') {
 <!doctype html>
 <html lang="it">
 <head>
+    <meta name="robots" content="noindex, nofollow" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trattativa #<?= (int)$d['id'] ?> — Wazlley CRM</title>
+    <title>Trattativa #<?= (int)$d['id'] ?> — V12 CRM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>body{background:#0b0f19;color:#e5e7eb;font-family:system-ui,Arial,sans-serif}</style>
 </head>
@@ -196,9 +198,10 @@ function inp($name, $label, $val, $w = '') {
                 ?>
                     <button name="set_to" value="<?= e($s) ?>" class="px-2 py-1 rounded <?= $cls ?>"><?= $done ? '✓ ' : '' ?><?= e($statuses[$s]) ?></button>
                 <?php endforeach; ?>
-                <?php if ($d['status'] === 'perso'): ?>
+                <?php if ($d['status'] === 'perso' || $d['status'] === 'fwd_partner'): ?>
                     <button name="set_to" value="in_trattativa" class="px-2 py-1 rounded bg-gray-700 text-white hover:bg-gray-600">Riapri</button>
                 <?php else: ?>
+                    <button name="set_to" value="fwd_partner" class="px-2 py-1 rounded bg-gray-800 text-blue-300 hover:bg-gray-700">Fwd to partner</button>
                     <button name="set_to" value="perso" class="px-2 py-1 rounded bg-gray-800 text-red-300 hover:bg-gray-700">Persa</button>
                 <?php endif; ?>
             </form>
@@ -231,6 +234,39 @@ function inp($name, $label, $val, $w = '') {
             <?php if ($d['tracking_number']): ?><p class="text-xs text-gray-500 mt-2">Tracking: <?= e($d['tracking_number']) ?></p><?php endif; ?>
         </div>
     </div>
+
+    <?php
+    $linkedMachines = inv_deal_linked($id);
+    $purchases = inv_deal_purchases($id);
+    if ($linkedMachines || $purchases): ?>
+    <div class="bg-gray-900 p-4 rounded-xl mb-6">
+        <h2 class="text-xs uppercase tracking-wide text-gray-500 mb-3">Macchine · <a href="inventory.php" class="text-yellow-400 normal-case">magazzino</a></h2>
+        <?php if ($linkedMachines): ?>
+            <p class="text-gray-400 text-xs mb-1">In trattativa / collegate</p>
+            <ul class="text-sm mb-3">
+                <?php foreach ($linkedMachines as $m): ?>
+                    <li class="flex items-center gap-2 py-0.5">
+                        <span class="inline-block w-2.5 h-2.5 rounded-full" style="background:<?= e(inv_color_hex($m['color'])) ?>"></span>
+                        <?= e($m['model']) ?> <?= e($m['color']) ?>
+                        <span class="text-gray-500 text-xs">(<?= e(inv_status_label($m['status'])) ?><?= $m['item_condition'] === 'usata' ? ' · usata' : '' ?>)</span>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+        <?php if ($purchases): ?>
+            <p class="text-gray-400 text-xs mb-1">Acquistate</p>
+            <ul class="text-sm">
+                <?php foreach ($purchases as $p): ?>
+                    <li class="flex items-center gap-2 py-0.5">
+                        <span class="inline-block w-2.5 h-2.5 rounded-full" style="background:<?= e(inv_color_hex($p['color'])) ?>"></span>
+                        <?= e($p['model']) ?> <?= e($p['color']) ?>
+                        <span class="text-gray-500 text-xs">· <?= e(substr($p['created_at'], 0, 10)) ?><?= $p['item_condition'] === 'usata' ? ' · usata' : '' ?></span>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+    </div>
+    <?php endif; ?>
 
     <?php $hasBilling = ($d['customer_type'] || $d['company_name'] || $d['vat_number'] || $d['tax_code'] || $d['bill_address']); ?>
     <div class="grid md:grid-cols-2 gap-8">

@@ -55,7 +55,7 @@ if ($deal && $_SERVER['REQUEST_METHOD'] === 'POST' && csrf_check($_POST['csrf'] 
     $cfg = require __DIR__ . '/inc/product.php';
     send_mail(
         $cfg['notify_to'],
-        'Ordine confermato — dati fatturazione ricevuti — Wazlley',
+        'Ordine confermato — dati fatturazione ricevuti — V12',
         "Il cliente ha confermato l'ordine e inserito i dati di fatturazione.\n"
             . "Deal #{$deal['id']} — {$deal['contact_name']} ({$deal['email']})\n"
     );
@@ -75,7 +75,9 @@ function f($d, $k) { return e($d[$k] ?? ''); }
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>I tuoi dati — Wazlley</title>
+    <title>I tuoi dati | Takeoff.pro</title>
+    <!-- Pagina personale raggiungibile via token: mai nei motori di ricerca -->
+    <meta name="robots" content="noindex, nofollow, noarchive" />
     <link rel="icon" href="/assets/img/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -90,7 +92,7 @@ function f($d, $k) { return e($d[$k] ?? ''); }
 </head>
 <body>
     <nav class="fixed top-0 w-full z-50 flex items-center px-6 py-4 bg-white/85 border-b border-gray-200 text-gray-800 backdrop-blur-md">
-        <a href="index.html"><img src="/assets/img/logo.png" alt="Wazlley" class="h-10" /></a>
+        <a href="index.html"><img src="/assets/img/logo.png" alt="V12" class="h-10" /></a>
     </nav>
     <main class="pt-28 pb-20 px-4 max-w-2xl mx-auto">
     <?php if (!$deal): ?>

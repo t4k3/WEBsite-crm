@@ -1,0 +1,14 @@
+User-agent: *
+
+# Area riservata e pagine personali dei clienti (raggiunte via token)
+Disallow: /admin/
+Disallow: /api/
+Disallow: /preventivo.php
+Disallow: /dati.php
+Disallow: /thankyou.html
+Disallow: /config/
+Disallow: /deploy/
+Disallow: /tools/
+Disallow: /sql/
+
+Sitemap: https://www.takeoff.pro/sitemap.xml

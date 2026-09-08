@@ -1,8 +1,10 @@
 <?php
 require __DIR__ . '/../inc/auth.php';
+require __DIR__ . '/../inc/inventory.php';
 require_login();
 
 $statuses = crm_statuses();
+$stock = inv_total_available();
 $filter = $_GET['status'] ?? '';
 
 $sql = 'SELECT id, created_at, status, paid, shipment, contact_name, email, country, quantity, company_name FROM deals';
@@ -22,19 +24,21 @@ $total = array_sum($counts);
 <!doctype html>
 <html lang="it">
 <head>
+    <meta name="robots" content="noindex, nofollow" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wazlley CRM</title>
+    <title>V12 CRM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>body{background:#0b0f19;color:#e5e7eb;font-family:system-ui,Arial,sans-serif}</style>
 </head>
 <body class="p-6">
     <header class="flex justify-between items-center mb-6">
-        <h1 class="text-xl font-bold">Wazlley CRM
+        <h1 class="text-xl font-bold">V12 CRM
             <span class="ml-1 px-2 py-0.5 rounded bg-yellow-400/15 text-yellow-300 text-xs font-mono align-middle"><?= e(APP_VERSION) ?></span>
             <span class="text-gray-500 text-sm font-normal">· <?= (int)$total ?> trattative</span>
         </h1>
         <div class="flex items-center gap-4 text-sm text-gray-400">
+            <a href="inventory.php" class="hover:text-white">Magazzino (<?= (int) $stock ?>)</a>
             <a href="new.php" class="bg-yellow-400 text-black px-3 py-1.5 rounded font-semibold hover:bg-yellow-300">+ Nuova trattativa</a>
             <span><?= e(current_admin()) ?> · <a href="logout.php" class="text-yellow-400">Esci</a></span>
         </div>

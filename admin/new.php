@@ -41,9 +41,10 @@ $csrf = csrf_token();
 <!doctype html>
 <html lang="it">
 <head>
+    <meta name="robots" content="noindex, nofollow" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nuova trattativa — Wazlley CRM</title>
+    <title>Nuova trattativa — V12 CRM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>body{background:#0b0f19;color:#e5e7eb;font-family:system-ui,Arial,sans-serif}</style>
 </head>

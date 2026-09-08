@@ -7,11 +7,13 @@
 const reels = [
   { url: "https://www.instagram.com/p/DZzhCAYuhRY/" },
   { url: "https://www.instagram.com/p/DaS6M3BDacz/" },
-  { url: "https://www.instagram.com/p/DaLGvmzNjc4/" },
-  { url: "https://www.instagram.com/p/DO21tY-jY5h/" },
-  { url: "https://www.instagram.com/p/C3IWSpasvG6/" },
-  { url: "https://www.instagram.com/p/DabFecnqmgO/" },
-  { url: "https://www.instagram.com/p/DaxJE8sjYDo/" },
+  // --- Post successivi nascosti: mostriamo solo i primi due in home.
+  //     Per riattivarne uno, togli le // davanti alla riga.
+  // { url: "https://www.instagram.com/p/DaLGvmzNjc4/" },
+  // { url: "https://www.instagram.com/p/DO21tY-jY5h/" },
+  // { url: "https://www.instagram.com/p/C3IWSpasvG6/" },
+  // { url: "https://www.instagram.com/p/DabFecnqmgO/" },
+  // { url: "https://www.instagram.com/p/DaxJE8sjYDo/" },
 ];
 
 // ---------- render ----------

@@ -17,11 +17,14 @@ if ($qty < 1) $qty = 1;
 $errors = [];
 if ($name === '')            $errors['contact_name'] = 'Campo obbligatorio';
 if (!valid_email($email))    $errors['email'] = 'Email non valida';
+if (post('country') === '')  $errors['country'] = 'Campo obbligatorio';
 if (post('consent') === '')  $errors['consent'] = 'Consenso obbligatorio';
 if ($errors) json_out(['ok' => false, 'errors' => $errors], 422);
 
 $cfg   = require __DIR__ . '/../inc/product.php';
 $token = gen_token();
+// La macchina è disponibile solo in giallo: colore fisso, non più scelto nel form.
+$variant = $cfg['variants'][0] ?? 'Giallo';
 
 try {
     $st = db()->prepare(
@@ -35,7 +38,7 @@ try {
         ':phone' => post('phone'),
         ':country' => post('country'),
         ':qty' => $qty,
-        ':variant' => post('variant'),
+        ':variant' => $variant,
         ':notes' => post('notes'),
         ':wantcall' => post('want_call') !== '' ? 1 : 0,
         ':avail' => post('availability'),
@@ -49,9 +52,9 @@ try {
 
 send_mail(
     $cfg['notify_to'],
-    'Nuova richiesta preventivo — Wazlley',
+    'Nuova richiesta preventivo — V12',
     "Nome: $name\nEmail: $email\nTelefono: " . post('phone') . "\nPaese: " . post('country')
-        . "\nQuantita: $qty\nVariante: " . post('variant') . "\nNote:\n" . post('notes') . "\n",
+        . "\nQuantita: $qty\nColore: $variant\nNote:\n" . post('notes') . "\n",
     $email
 );
 

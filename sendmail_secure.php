@@ -1,6 +1,6 @@
 <?php
 // ==========================================
-//  SENDMAIL SECURE – Takeoff.pro / Wazlley
+//  SENDMAIL SECURE – Takeoff.pro / V12
 //  Versione 2025 – con validazione, honeypot e sicurezza header
 // ==========================================
 
